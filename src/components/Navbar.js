@@ -25,7 +25,7 @@ function Navbar() {
         </Link>
 
         <nav className="d-inline-flex mt-2 mt-md-0 ms-md-auto align-items-center">
-          <Link className="fs-5 me-3 py-2 text-dark text-decoration-none" to="/"><i className="bi bi-list-task"></i>Upload</Link>
+          <Link className="fs-5 me-3 py-2 text-dark text-decoration-none" to="/user/signup">Cadastrar</Link>
           {!loggedInUser &&
             <Link className="fs-5 me-3 py-2 text-dark text-decoration-none" to="/user/login"><i className="bi bi-person"></i>Login</Link>
           }

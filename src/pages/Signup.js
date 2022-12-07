@@ -2,11 +2,14 @@ import { useState } from "react";
 import toast from 'react-hot-toast'
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
+import validarCPF from "../utils/validarCPF";
 
 function Signup() {
 
+  const [img, setImg] = useState()
   const navigate = useNavigate()
   const [form, setForm] = useState({
+    imgProfile: '',
     cpf: '',
     first_name: '',
     last_name: '',
@@ -19,17 +22,41 @@ function Signup() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
+  function handleImage(e) {
+    setImg(e.target.files[0])
+  }
+
+  async function handleUpload(e) {
+    try {
+      const uploadData = new FormData()
+      uploadData.append('picture', img)
+      const response = await api.post('/uploadImage/upload', uploadData)
+      return response.data.url
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
+
+    if (!validarCPF(form.cpf)) {
+      alert ('CPF inválido')
+      return 
+    }
 
     if (form.password !== form.password2) {
       alert('Senhas incompatíveis')
       return
     }
 
+    const imgURL = await handleUpload()
+
     try {
-      await api.post('http://127.0.0.1:8082/user/signup', form)
+      await api.post('/user/signup', {...form, imgProfile: imgURL})
       setForm({
+        imgProfile: '',
         cpf: '',
         first_name: '',
         last_name: '',
@@ -49,6 +76,10 @@ function Signup() {
   return (
     <form className="col-6 m-auto" onSubmit={handleSubmit}>
       <h2 className="text-center">Cadastrar usuário</h2>
+      <div className="mb-3">
+        <label htmlFor="formFile" className="form-label">Foto do perfil</label>
+        <input className="form-control" type="file" id="formFile" onChange={handleImage} />
+      </div>
       <div className="form-floating mb-3">
         <input type="text" name="cpf" onChange={handleChange} value={form.cpf} className="form-control" id="cpfId" placeholder="Meu CPF" />
         <label htmlFor="cpfId">CPF</label>

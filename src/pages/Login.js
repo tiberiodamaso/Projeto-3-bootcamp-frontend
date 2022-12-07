@@ -19,7 +19,7 @@ function Login() {
   async function handleSubmit(e) {
     e.preventDefault()
     try {
-      const response = await api.post('http://127.0.0.1:8082/user/login', form)
+      const response = await api.post('/user/login', form)
       setForm({
         email: "",
         password: "",
