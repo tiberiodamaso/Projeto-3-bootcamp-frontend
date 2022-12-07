@@ -1,15 +1,18 @@
 import { useState } from "react";
-import axios from "axios";
 import toast from 'react-hot-toast'
+import { useNavigate } from "react-router-dom";
+import api from "../api/api";
 
 function Signup() {
 
+  const navigate = useNavigate()
   const [form, setForm] = useState({
     cpf: '',
     first_name: '',
     last_name: '',
     email: '',
-    role: ''
+    password: '',
+    password2: '',
   })
 
   function handleChange(e) {
@@ -18,15 +21,28 @@ function Signup() {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    await axios.post('http://127.0.0.1:8082/user/signup', form)
-    setForm({
-      cpf: '',
-      first_name: '',
-      last_name: '',
-      email: '',
-      role: 'Escolha uma opção',
-    })
-    toast.success("Usuário adicionado com sucesso!");
+
+    if (form.password !== form.password2) {
+      alert('Senhas incompatíveis')
+      return
+    }
+
+    try {
+      await api.post('http://127.0.0.1:8082/user/signup', form)
+      setForm({
+        cpf: '',
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: '',
+        password2: '',
+      })
+      toast.success("Usuário adicionado com sucesso!");
+      navigate('/user/login')
+    } catch (error) {
+      console.log(error)
+
+    }
   }
 
 
@@ -49,7 +65,15 @@ function Signup() {
         <input type="email" name="email" onChange={handleChange} value={form.email} className="form-control" id="emailId" placeholder="meuemail@email.com" />
         <label htmlFor="emailId">Email</label>
       </div>
-      <div className="form-floating">
+      <div className="form-floating mb-3">
+        <input type="password" name="password" onChange={handleChange} value={form.password} className="form-control" id="password1Id" placeholder="senha forte" />
+        <label htmlFor="password1Id">Senha</label>
+      </div>
+      <div className="form-floating mb-3">
+        <input type="password" name="password2" onChange={handleChange} value={form.password2} className="form-control" id="password2Id" placeholder="confirmação da senha" />
+        <label htmlFor="password2Id">Confirmação da senha</label>
+      </div>
+      {/* <div className="form-floating">
         <select className="form-select" name="role" id="roleId" onChange={handleChange} value={form.role} aria-label="Floating label select">
           <option value="Escolha uma opção">Escolha uma opção</option>
           <option value="Admin">Admin</option>
@@ -57,7 +81,7 @@ function Signup() {
           <option value="Professor">Professor</option>
         </select>
         <label htmlFor="roleId">Role</label>
-      </div>
+      </div> */}
       <button className="w-100 btn btn-lg btn-primary my-3" type="submit">Salvar</button>
     </form>
   );
