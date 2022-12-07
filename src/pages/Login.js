@@ -1,9 +1,11 @@
 import api from "../api/api";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react'
+import { AuthContext } from '../contexts/authContext.js'
 
 function Login() {
-
+  const {setLoggedInUser} = useContext(AuthContext)
   const navigate = useNavigate()
   const [form, setForm] = useState({
     email: '',
@@ -17,12 +19,13 @@ function Login() {
   async function handleSubmit(e) {
     e.preventDefault()
     try {
-      const response = await api.post('http://127.0.0.1:8082/user/login', form)
+      const response = await api.post('/user/login', form)
       setForm({
         email: "",
         password: "",
       });
       localStorage.setItem('loggedInUser', JSON.stringify(response.data))
+      setLoggedInUser({...response.data})
       navigate('/user/profile')
     } catch (error) {
       console.log(error)
