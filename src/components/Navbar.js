@@ -1,15 +1,17 @@
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
 import { AuthContext } from '../contexts/authContext.js'
+import { useNavigate } from 'react-router-dom'
 
 function Navbar() {
+  const navigate = useNavigate()
+  const { loggedInUser, setLoggedInUser } = useContext(AuthContext)
 
-  const { loggedInUser } = useContext(AuthContext)
-
-  console.log(loggedInUser)
 
   function handleLogout() {
     localStorage.removeItem('loggedInUser')
+    setLoggedInUser(null)
+    navigate('/')
   }
 
   return (
@@ -24,10 +26,10 @@ function Navbar() {
 
         <nav className="d-inline-flex mt-2 mt-md-0 ms-md-auto align-items-center">
           <Link className="fs-5 me-3 py-2 text-dark text-decoration-none" to="/"><i className="bi bi-list-task"></i>Upload</Link>
-          {!loggedInUser && 
-          <Link className="fs-5 me-3 py-2 text-dark text-decoration-none" to="/user/login"><i className="bi bi-person"></i>Login</Link>
+          {!loggedInUser &&
+            <Link className="fs-5 me-3 py-2 text-dark text-decoration-none" to="/user/login"><i className="bi bi-person"></i>Login</Link>
           }
-          {loggedInUser && 
+          {loggedInUser &&
             <button className="fs-5 me-3 py-2 text-dark text-decoration-none btn" onClick={handleLogout}><i className="bi bi-person"></i>Logout</button>
           }
         </nav>

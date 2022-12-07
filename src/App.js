@@ -6,6 +6,7 @@ import Profile from './pages/Profile.js'
 import Error from './pages/Error.js'
 import { Toaster } from "react-hot-toast";
 import Navbar from './components/Navbar.js'
+import ProtectedRoute from './components/ProtectedRoute.js'
 
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/user/login' element={<Login />} />
         <Route path='/user/signup' element={<Signup />} />
-        <Route path='/user/profile' element={<Profile />} />
+        <Route path='/user/profile' element={<ProtectedRoute Component={Profile} />} />
         <Route path='*' element={<Error />} />
       </Routes>
 

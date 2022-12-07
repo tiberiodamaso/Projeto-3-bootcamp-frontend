@@ -34,9 +34,6 @@ function handleSubmit(e) {
   })
 }
 
-
-console.log(user)
-
 return (
   <div>
   {!isLoading && (<form className="col-6 m-auto" onSubmit={handleSubmit}>
