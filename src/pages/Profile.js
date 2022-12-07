@@ -1,24 +1,24 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import users from '../users.json'
+import api from '../api/api'
 
 
 function Profile() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [form, setForm] = useState({
     first_name: '',
-    last_name: 0,
+    last_name: '',
     email: '',
-    role: ''
   })
   const [user, setUser] = useState({})
-  const { id } = useParams()
 
   useEffect(() => {
-    setUser(users.filter(user => {
-        return user.id === parseInt(id) }))
-    setIsLoading(true)
-  }, [id])
+    async function fetchUser() {
+      const response = await api.get('/user/profile')
+      setUser(response.data)
+    }
+    fetchUser()
+    setIsLoading(false)
+  }, [])
 
 function handleChange(e) {
   setForm({ ...form, [e.target.name]: e.target.value })
@@ -33,12 +33,16 @@ function handleSubmit(e) {
     role: 'Escolha uma opção'
   })
 }
+
+
+console.log(user)
+
 return (
   <div>
   {!isLoading && (<form className="col-6 m-auto" onSubmit={handleSubmit}>
     <h2 className="text-center">Editar perfil</h2>
     <div className="form-floating mb-3">
-      <input type="text" name="cpf" onChange={handleChange} value={user.cpf} className="form-control" id="cpfId" placeholder="Meu CPF" />
+      <input type="text" name="cpf" value={user.cpf} className="form-control" id="cpfId" placeholder="Meu CPF" />
       <label htmlFor="cpfId">CPF</label>
     </div>
     <div className="form-floating mb-3">
@@ -52,15 +56,6 @@ return (
     <div className="form-floating mb-3">
       <input type="email" name="email" onChange={handleChange} value={user.email} className="form-control" id="emailId" placeholder="meuemail@email.com" />
       <label htmlFor="emailId">Email</label>
-    </div>
-    <div className="form-floating">
-      <select className="form-select" id="roleId" aria-label="Floating label select example">
-        <option value={user.role}>Escolha uma opção</option>
-        <option value="Admin">Admin</option>
-        <option value="Aluno">Aluno</option>
-        <option value="Professor">Professor</option>
-      </select>
-      <label htmlFor="roleId">Role</label>
     </div>
     <button className="w-100 btn btn-lg btn-primary my-3" type="submit">Salvar</button>
   </form>)}
