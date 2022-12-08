@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import api from '../api/api'
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 
 function Profile() {
   const [img, setImg] = useState()
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
   const [reload, setReload] = useState(false)
   // const [form, setForm] = useState({
@@ -45,7 +48,7 @@ function Profile() {
   async function handleSubmit(e) {
     e.preventDefault()
     const imgURL = await handleUpload()
-    await api.put('/user/update', {...user, imgProfile: imgURL})
+    await api.put('/user/update', { ...user, imgProfile: imgURL })
     // setForm({
     //   imgProfile: '',
     //   first_name: '',
@@ -53,6 +56,17 @@ function Profile() {
     //   email: '',
     // })
     setReload(!reload)
+  }
+
+  async function handleDelete() {
+    try {
+      await api.delete('/user/delete', user)
+      navigate('/');
+      toast.success("Conta excluída com sucesso.");
+    } catch (error) {
+      console.log(error)
+      return toast.error("Não foi possível deletar o usuário.");
+    }
   }
 
   return (
@@ -82,7 +96,10 @@ function Profile() {
           <input type="email" name="email" onChange={handleChange} value={user.email} className="form-control" id="emailId" placeholder="meuemail@email.com" />
           <label htmlFor="emailId">Email</label>
         </div>
-        <button className="w-100 btn btn-lg btn-primary my-3" type="submit">Salvar</button>
+        <div className='d-flex'>
+          <button className="w-100 btn btn-lg btn-danger mx-1" type="button" onClick={handleDelete}>Excluir</button>
+          <button className="w-100 btn btn-lg btn-primary mx-1" type="submit">Salvar</button>
+        </div>
       </form>)}
 
     </div>
