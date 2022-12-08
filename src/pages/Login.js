@@ -24,18 +24,23 @@ function Login() {
         email: "",
         password: "",
       });
+
       localStorage.setItem('loggedInUser', JSON.stringify(response.data))
       setLoggedInUser({...response.data})
-      navigate('/user/profile')
+      navigate('/analises')
     } catch (error) {
       console.log(error)
+      if (error.response.status === 401){
+        alert('Por favor ative a sua conta clicando no link enviado por email')
+        return 
+      }
     }
   }
 
   return (
-    <div>
+    <div className="d-flex" style={{height: "90vh"}}>
       <main className="form-signin w-100 m-auto text-center">
-        <form onSubmit={handleSubmit} className="col-6 m-auto">
+        <form onSubmit={handleSubmit} className="col-6 col-md-3 m-auto">
           <h1 className="h3 mb-3 fw-normal">Log in</h1>
           <div className="form-floating my-3">
             <input type="email" name="email" onChange={handleChange} value={form.email} className="form-control" id="floatingInput" placeholder="name@example.com" />
