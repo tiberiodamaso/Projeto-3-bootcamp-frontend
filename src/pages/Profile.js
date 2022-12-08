@@ -56,8 +56,8 @@ function Profile() {
   }
 
   return (
-    <div>
-      {!isLoading && (<form className="col-6 m-auto" onSubmit={handleSubmit}>
+    <div className='my-5'>
+      {!isLoading && (<form className="col-6 col-md-3 m-auto" onSubmit={handleSubmit}>
         <h2 className="text-center">Editar perfil</h2>
         <div className="text-center mb-3">
           <img className="rounded-circle" src={user.imgProfile} alt="imagem do perfil" />

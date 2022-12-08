@@ -65,7 +65,7 @@ function Signup() {
         password2: '',
       })
       toast.success("Usuário adicionado com sucesso!");
-      navigate('/user/login')
+      navigate('/')
     } catch (error) {
       console.log(error)
 
@@ -74,7 +74,7 @@ function Signup() {
 
 
   return (
-    <form className="col-6 m-auto" onSubmit={handleSubmit}>
+    <form className="col-6 col-md-3 m-auto my-5" onSubmit={handleSubmit}>
       <h2 className="text-center">Cadastrar usuário</h2>
       <div className="mb-3">
         <label htmlFor="formFile" className="form-label">Foto do perfil</label>
