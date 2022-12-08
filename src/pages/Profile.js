@@ -61,6 +61,8 @@ function Profile() {
   async function handleDelete() {
     try {
       await api.delete('/user/delete', user)
+      localStorage.removeItem('loggedInUser')
+      setReload(!reload)
       navigate('/');
       toast.success("Conta excluída com sucesso.");
     } catch (error) {
