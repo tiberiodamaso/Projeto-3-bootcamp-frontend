@@ -4,6 +4,7 @@ import Login from './pages/Login.js'
 import Signup from './pages/Signup.js'
 import Profile from './pages/Profile.js'
 import Analises from './pages/Analises.js'
+import Logs from './pages/Logs.js'
 import Error from './pages/Error.js'
 import { Toaster } from "react-hot-toast";
 import Navbar from './components/Navbar.js'
@@ -21,6 +22,7 @@ function App() {
         <Route path='/signup' element={<Signup />} />
         <Route path='/profile' element={<ProtectedRoute Component={Profile} />} />
         <Route path='/analises' element={<ProtectedRoute Component={Analises} />} />
+        <Route path='/logs' element={<ProtectedRoute Component={Logs} />} />
         <Route path='*' element={<Error />} />
       </Routes>
 
