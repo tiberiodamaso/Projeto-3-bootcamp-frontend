@@ -61,25 +61,19 @@ function Analises() {
 
   //
   async function handleClick(ano, trimestre) {
-    let dcpSection = document.querySelector("#dcpSection");
-    const cnpjLimpo = cnpj.replace(/\D/g, "");
-    console.log(ano, trimestre);
-    const response = await api.get(
-      `/dcp/all-dcp?cnpj=${cnpjLimpo}&ano=${ano}&trimestre=${trimestre}`
-    );
-    console.log(response.data);
-    setDcp1(response.data[0]);
-    setDcp2(response.data[1]);
-    setDcp3(response.data[2]);
-    dcpSection.classList.toggle("d-none");
-
-    const resposta = await api.get("/nfe/all-nfe", {
-      params: { cnpj: cnpjLimpo, trim: trimestre, ano: ano },
-    });
-    setGomoExport(exportacoes(resposta.data, ano, trimestre));
-
-    setIsLoading(false);
+    let dcpSection = document.querySelector('#dcpSection')
+    let dcpMetaData = document.querySelector('#dcpMetaData')
+    const cnpjLimpo = cnpj.replace(/\D/g, "")
+    const response = await api.get(`/dcp/all-dcp?cnpj=${cnpjLimpo}&ano=${ano}&trimestre=${trimestre}`)
+    setDcp1(response.data[0])
+    setDcp2(response.data[1])
+    setDcp3(response.data[2])
+    dcpSection.classList.toggle('d-none')
+    dcpMetaData.innerText = `${trimestre}/${ano}`
+    setIsLoading(false)
   }
+
+
 
   return (
     <div className="d-flex">
@@ -136,21 +130,16 @@ function Analises() {
       {/* DCP E ANÁLISES */}
       <div className="container mx-5">
         {/* DCP */}
-        <div className="d-none" id="dcpSection">
-          <h2 className="pt-5 mx-3">Demonstrativo de Crédito Presumido</h2>
-          <div className="py-2 mx-3">{cnpj}</div>
+        <div className='d-none' id='dcpSection'>
+          <div className='d-flex justify-content-between'>
+            <h2 className='py-5 mx-3'>Demonstrativo de Crédito Presumido</h2>
+            <h2 className='py-5 mx-3' id='dcpMetaData'></h2>
+          </div>
           <div className="accordion mx-3" id="accordionExample">
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingOne">
-                <button
-                  className="accordion-button"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseOne"
-                  aria-expanded="true"
-                  aria-controls="collapseOne"
-                >
-                  Exportação direta no mês
+                <button className="accordion-button fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  <span className='col-8'>Exportação direta no mês</span>
                 </button>
               </h2>
               <div
@@ -179,86 +168,82 @@ function Analises() {
                         <th>Calculado</th>
                       </tr>
                     </thead>
-                    <tbody className="table-group-divider">
-                      <tr>
-                        <td>Linha 1</td>
-                        <td>{dcp1.linha_1}</td>
-                        <td>{gomoExport[0].linha_1}</td>
-                        <td>{dcp2.linha_1}</td>
-                        <td>{gomoExport[1].linha_1}</td>
-                        <td>{dcp3.linha_1}</td>
-                        <td>{gomoExport[2].linha_1}</td>
-                      </tr>
-                      <tr>
-                        <td>Linha 2</td>
-                        <td>{dcp1.linha_2}</td>
-                        <td>{gomoExport[0].linha_2}</td>
-                        <td>{dcp2.linha_2}</td>
-                        <td>{gomoExport[1].linha_2}</td>
-                        <td>{dcp3.linha_2}</td>
-                        <td>{gomoExport[2].linha_2}</td>
-                      </tr>
-                      <tr>
-                        <td>Linha 3</td>
-                        <td></td>
-                        <td>{gomoExport[0].linha_3}</td>
-                        <td></td>
-                        <td>{gomoExport[1].linha_3}</td>
-                        <td></td>
-                        <td>{gomoExport[2].linha_3}</td>
-                      </tr>
-                      <tr>
-                        <td>Linha 4</td>
-                        <td></td>
-                        <td>{gomoExport[0].linha_4}</td>
-                        <td></td>
-                        <td>{gomoExport[1].linha_4}</td>
-                        <td></td>
-                        <td>{gomoExport[2].linha_4}</td>
-                      </tr>
-                      <tr>
-                        <td>Linha 5</td>
-                        <td></td>
-                        <td>{gomoExport[0].linha_5}</td>
-                        <td></td>
-                        <td>{gomoExport[1].linha_5}</td>
-                        <td></td>
-                        <td>{gomoExport[2].linha_5}</td>
-                      </tr>
-                      <tr>
-                        <td>Linha 6</td>
-                        <td></td>
-                        <td>{gomoExport[0].linha_6}</td>
-                        <td></td>
-                        <td>{gomoExport[1].linha_6}</td>
-                        <td></td>
-                        <td>{gomoExport[2].linha_6}</td>
-                      </tr>
-                      <tr>
-                        <td>Linha 7</td>
-                        <td></td>
-                        <td>{gomoExport[0].linha_7}</td>
-                        <td></td>
-                        <td>{gomoExport[1].linha_7}</td>
-                        <td></td>
-                        <td>{gomoExport[2].linha_7}</td>
-                      </tr>
-                    </tbody>
+                    {!isLoading && (
+
+                      <tbody className='table-group-divider'>
+                        <tr>
+                          <td>Linha 1</td>
+                          <td>{dcp1.linha_1.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                          <td>{dcp2.linha_1.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                          <td>{dcp3.linha_1.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>Linha 2</td>
+                          <td>{dcp1.linha_2.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                          <td>{dcp2.linha_2.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                          <td>{dcp3.linha_2.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>Linha 3</td>
+                          <td>{dcp1.linha_3.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                          <td>{dcp2.linha_3.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                          <td>{dcp3.linha_3.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>Linha 4</td>
+                          <td>{dcp1.linha_4.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                          <td>{dcp2.linha_4.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                          <td>{dcp3.linha_4.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>Linha 5</td>
+                          <td>{dcp1.linha_5.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                          <td>{dcp2.linha_5.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                          <td>{dcp3.linha_5.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>Linha 6</td>
+                          <td>{dcp1.linha_6.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                          <td>{dcp2.linha_6.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                          <td>{dcp3.linha_6.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>Linha 7</td>
+                          <td>{dcp1.linha_7.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                          <td>{dcp2.linha_7.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                          <td>{dcp3.linha_7.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    )}
                   </table>
                 </div>
               </div>
             </div>
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingTwo">
-                <button
-                  className="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseTwo"
-                  aria-expanded="false"
-                  aria-controls="collapseTwo"
-                >
-                  Matérias primas, embalagens
+                <button className="accordion-button fs-4 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  <span className='col-8'>Matérias primas, embalagens</span>
                 </button>
               </h2>
               <div
@@ -322,15 +307,8 @@ function Analises() {
             </div>
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingThree">
-                <button
-                  className="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseThree"
-                  aria-expanded="false"
-                  aria-controls="collapseThree"
-                >
-                  Prestação de serviços
+                <button className="accordion-button fs-4 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  <span className='col-8'>Prestação de serviços</span>
                 </button>
               </h2>
               <div
@@ -399,7 +377,16 @@ function Analises() {
         <div className="">
           <h2 className="py-5 mx-3">Análises</h2>
         </div>
+
+        {/* BOTÕES */}
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-primary mx-3">Salvar análise</button>
+          <button class="btn btn-primary">Gerar relattório</button>
+        </div>
+
       </div>
+    </div>
+
     </div>
   );
 }
