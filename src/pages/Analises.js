@@ -1,16 +1,17 @@
-import { useState, useEffect } from 'react'
-import api from '../api/api'
+import { useState, useEffect } from "react";
+import api from "../api/api";
+import { exportacoes } from "../utils/montaDCP";
 
 function Analises() {
-
-  const [dcps, setDCPs] = useState([])
-  const [cnpj, setCnpj] = useState("")
-  const [empresa, setEmpresa] = useState('')
+  const [dcps, setDCPs] = useState([]);
+  const [cnpj, setCnpj] = useState("");
+  const [empresa, setEmpresa] = useState("");
   // const [dcpsTrimestre, setDcpsTrimestre] = useState([])
-  const [dcp1, setDcp1] = useState({})
-  const [dcp2, setDcp2] = useState({})
-  const [dcp3, setDcp3] = useState({})
-  const [isLoading, setIsLoading] = useState(true)
+  const [dcp1, setDcp1] = useState({});
+  const [dcp2, setDcp2] = useState({});
+  const [dcp3, setDcp3] = useState({});
+  const [gomoExport, setGomoExport] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Coloca a máscara no CNPJ
   function handleChange(e) {
@@ -43,47 +44,66 @@ function Analises() {
       data = cpf;
     }
     setCnpj(data);
-  };
+  }
 
   // Recupera as DCPs do banco
   async function handleSubmit(e) {
-    e.preventDefault()
-    const cnpjLimpo = e.target[0].value.replace(/\D/g, "")
+    e.preventDefault();
+    const cnpjLimpo = e.target[0].value.replace(/\D/g, "");
     try {
-      const response = await api.get(`/dcp/cnpj/${cnpjLimpo}`)
-      setDCPs(response.data)
-      setEmpresa(response.data[0].nome)
+      const response = await api.get(`/dcp/cnpj/${cnpjLimpo}`);
+      setDCPs(response.data);
+      setEmpresa(response.data[0].nome);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
-  // 
+  //
   async function handleClick(ano, trimestre) {
-    let dcpSection = document.querySelector('#dcpSection')
-    const cnpjLimpo = cnpj.replace(/\D/g, "")
-    console.log(ano, trimestre)
-    const response = await api.get(`/dcp/all-dcp?cnpj=${cnpjLimpo}&ano=${ano}&trimestre=${trimestre}`)
-    console.log(response.data)
-    setDcp1(response.data[0])
-    setDcp2(response.data[1])
-    setDcp3(response.data[2])
-    dcpSection.classList.toggle('d-none')
+    let dcpSection = document.querySelector("#dcpSection");
+    const cnpjLimpo = cnpj.replace(/\D/g, "");
+    console.log(ano, trimestre);
+    const response = await api.get(
+      `/dcp/all-dcp?cnpj=${cnpjLimpo}&ano=${ano}&trimestre=${trimestre}`
+    );
+    console.log(response.data);
+    setDcp1(response.data[0]);
+    setDcp2(response.data[1]);
+    setDcp3(response.data[2]);
+    dcpSection.classList.toggle("d-none");
+
+    const resposta = await api.get("/nfe/all-nfe", {
+      params: { cnpj: cnpjLimpo, trim: trimestre, ano: ano },
+    });
+    setGomoExport(exportacoes(resposta.data, ano, trimestre));
   }
 
-  
   return (
-    <div className='d-flex'>
+    <div className="d-flex">
       {/* SIDEBAR */}
-      <div className="d-flex flex-column flex-shrink-0 px-3 vh-100 bg-dark bg-opacity-10" style={{ width: 305 }}>
-        <form className='mt-5' onSubmit={handleSubmit}>
+      <div
+        className="d-flex flex-column flex-shrink-0 px-3 vh-100 bg-dark bg-opacity-10"
+        style={{ width: 305 }}
+      >
+        <form className="mt-5" onSubmit={handleSubmit}>
           <div className="input-group mb-3">
-            <input type="text" value={cnpj} onChange={handleChange} className="form-control form-control-lg" placeholder="CNPJ" aria-label="CNPJ" aria-describedby="cnpj" />
-            <button className="input-group-text" id="cnpj" type="submit">OK</button>
+            <input
+              type="text"
+              value={cnpj}
+              onChange={handleChange}
+              className="form-control form-control-lg"
+              placeholder="CNPJ"
+              aria-label="CNPJ"
+              aria-describedby="cnpj"
+            />
+            <button className="input-group-text" id="cnpj" type="submit">
+              OK
+            </button>
           </div>
         </form>
         <div>
-          <h4 className='text-center'>{empresa}</h4>
+          <h4 className="text-center">{empresa}</h4>
           <table className="table text-center">
             <thead>
               <tr>
@@ -92,13 +112,19 @@ function Analises() {
               </tr>
             </thead>
             <tbody>
-              {dcps.map(dcp => {
+              {dcps.map((dcp) => {
                 return (
-                  <tr key={dcp._id} onClick={() => handleClick(dcp.ano, dcp.trimestre)}>
-                    <td><i className="bi bi-file-earmark-text me-2"></i>{dcp.ano}</td>
+                  <tr
+                    key={dcp._id}
+                    onClick={() => handleClick(dcp.ano, dcp.trimestre)}
+                  >
+                    <td>
+                      <i className="bi bi-file-earmark-text me-2"></i>
+                      {dcp.ano}
+                    </td>
                     <td>{dcp.trimestre}</td>
                   </tr>
-                )
+                );
               })}
             </tbody>
           </table>
@@ -106,25 +132,38 @@ function Analises() {
       </div>
 
       {/* DCP E ANÁLISES */}
-      <div className='container mx-5'>
-
+      <div className="container mx-5">
         {/* DCP */}
-        <div className='d-none' id='dcpSection'>
-          <h2 className='pt-5 mx-3'>Demonstrativo de Crédito Presumido</h2>
-          <div className='py-2 mx-3'>{cnpj}</div>
+        <div className="d-none" id="dcpSection">
+          <h2 className="pt-5 mx-3">Demonstrativo de Crédito Presumido</h2>
+          <div className="py-2 mx-3">{cnpj}</div>
           <div className="accordion mx-3" id="accordionExample">
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingOne">
-                <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <button
+                  className="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseOne"
+                  aria-expanded="true"
+                  aria-controls="collapseOne"
+                >
                   Exportação direta no mês
                 </button>
               </h2>
-              <div id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div
+                id="collapseOne"
+                className="accordion-collapse collapse show"
+                aria-labelledby="headingOne"
+                data-bs-parent="#accordionExample"
+              >
                 <div className="accordion-body">
-                  <table className='table table-hover text-center'>
+                  <table className="table table-hover text-center">
                     <thead>
                       <tr>
-                        <th rowSpan="2" style={{ "verticalAlign": "middle" }}>Linha</th>
+                        <th rowSpan="2" style={{ verticalAlign: "middle" }}>
+                          Linha
+                        </th>
                         <th colSpan="2">Jan</th>
                         <th colSpan="2">Fev</th>
                         <th colSpan="2">Mar</th>
@@ -138,70 +177,69 @@ function Analises() {
                         <th>Calculado</th>
                       </tr>
                     </thead>
-                    <tbody className='table-group-divider'>
+                    <tbody className="table-group-divider">
                       <tr>
-
                         <td>Linha 1</td>
                         <td>{dcp1.linha_1}</td>
-                        <td></td>
+                        <td>{gomoExport[0].linha_1}</td>
                         <td>{dcp2.linha_1}</td>
-                        <td></td>
+                        <td>{gomoExport[1].linha_1}</td>
                         <td>{dcp3.linha_1}</td>
-                        <td></td>
+                        <td>{gomoExport[2].linha_1}</td>
                       </tr>
                       <tr>
                         <td>Linha 2</td>
                         <td>{dcp1.linha_2}</td>
-                        <td></td>
+                        <td>{gomoExport[0].linha_2}</td>
                         <td>{dcp2.linha_2}</td>
-                        <td></td>
+                        <td>{gomoExport[1].linha_2}</td>
                         <td>{dcp3.linha_2}</td>
-                        <td></td>
+                        <td>{gomoExport[2].linha_2}</td>
                       </tr>
                       <tr>
                         <td>Linha 3</td>
                         <td></td>
+                        <td>{gomoExport[0].linha_3}</td>
                         <td></td>
+                        <td>{gomoExport[1].linha_3}</td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{gomoExport[2].linha_3}</td>
                       </tr>
                       <tr>
                         <td>Linha 4</td>
                         <td></td>
+                        <td>{gomoExport[0].linha_4}</td>
                         <td></td>
+                        <td>{gomoExport[1].linha_4}</td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{gomoExport[2].linha_4}</td>
                       </tr>
                       <tr>
                         <td>Linha 5</td>
                         <td></td>
+                        <td>{gomoExport[0].linha_5}</td>
                         <td></td>
+                        <td>{gomoExport[1].linha_5}</td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{gomoExport[2].linha_5}</td>
                       </tr>
                       <tr>
                         <td>Linha 6</td>
                         <td></td>
+                        <td>{gomoExport[0].linha_6}</td>
                         <td></td>
+                        <td>{gomoExport[1].linha_6}</td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{gomoExport[2].linha_6}</td>
                       </tr>
                       <tr>
                         <td>Linha 7</td>
                         <td></td>
+                        <td>{gomoExport[0].linha_7}</td>
                         <td></td>
+                        <td>{gomoExport[1].linha_7}</td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{gomoExport[2].linha_7}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -210,16 +248,30 @@ function Analises() {
             </div>
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingTwo">
-                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <button
+                  className="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseTwo"
+                  aria-expanded="false"
+                  aria-controls="collapseTwo"
+                >
                   Matérias primas, embalagens
                 </button>
               </h2>
-              <div id="collapseTwo" className="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div
+                id="collapseTwo"
+                className="accordion-collapse collapse"
+                aria-labelledby="headingTwo"
+                data-bs-parent="#accordionExample"
+              >
                 <div className="accordion-body">
-                  <table className='table table-hover text-center'>
+                  <table className="table table-hover text-center">
                     <thead>
                       <tr>
-                        <th rowSpan="2" style={{ "verticalAlign": "middle" }}>Linha</th>
+                        <th rowSpan="2" style={{ verticalAlign: "middle" }}>
+                          Linha
+                        </th>
                         <th colSpan="2">Jan</th>
                         <th colSpan="2">Fev</th>
                         <th colSpan="2">Mar</th>
@@ -233,7 +285,7 @@ function Analises() {
                         <th>Calculado</th>
                       </tr>
                     </thead>
-                    <tbody className='table-group-divider'>
+                    <tbody className="table-group-divider">
                       <tr>
                         <td></td>
                         <td></td>
@@ -268,16 +320,30 @@ function Analises() {
             </div>
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingThree">
-                <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                <button
+                  className="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseThree"
+                  aria-expanded="false"
+                  aria-controls="collapseThree"
+                >
                   Prestação de serviços
                 </button>
               </h2>
-              <div id="collapseThree" className="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+              <div
+                id="collapseThree"
+                className="accordion-collapse collapse"
+                aria-labelledby="headingThree"
+                data-bs-parent="#accordionExample"
+              >
                 <div className="accordion-body">
-                  <table className='table table-hover text-center'>
+                  <table className="table table-hover text-center">
                     <thead>
                       <tr>
-                        <th rowSpan="2" style={{ "verticalAlign": "middle" }}>Linha</th>
+                        <th rowSpan="2" style={{ verticalAlign: "middle" }}>
+                          Linha
+                        </th>
                         <th colSpan="2">Jan</th>
                         <th colSpan="2">Fev</th>
                         <th colSpan="2">Mar</th>
@@ -291,7 +357,7 @@ function Analises() {
                         <th>Calculado</th>
                       </tr>
                     </thead>
-                    <tbody className='table-group-divider'>
+                    <tbody className="table-group-divider">
                       <tr>
                         <td></td>
                         <td></td>
@@ -328,12 +394,11 @@ function Analises() {
         </div>
 
         {/* ANALISES */}
-        <div className=''>
-          <h2 className='py-5 mx-3'>Análises</h2>
+        <div className="">
+          <h2 className="py-5 mx-3">Análises</h2>
         </div>
-
       </div>
-    </div >
+    </div>
   );
 }
 
