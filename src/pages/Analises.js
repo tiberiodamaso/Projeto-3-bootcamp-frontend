@@ -71,39 +71,72 @@ function Analises() {
     dcpSection.classList.toggle('d-none')
   }
 
-  
+  function handleSelectedRow(id){
+    
+    const table = document.getElementById("tableResult");
+    const rows = table.getElementsByTagName("tr");
+
+    const selectedRow = document.getElementById(id)
+    
+    for (let i = 0; i < rows.length; i++) {
+      table.rows[i].classList.remove("bg-white")
+      table.rows[i].classList.remove("bg-opacity-50")
+    }
+    
+    selectedRow.classList.add("bg-white")
+    selectedRow.classList.add("bg-opacity-50")
+  }
+
   return (
+    
     <div className='d-flex'>
+      
+      
       {/* SIDEBAR */}
       <div className="d-flex flex-column flex-shrink-0 px-3 vh-100 bg-dark bg-opacity-10" style={{ width: 305 }}>
+        
         <form className='mt-5' onSubmit={handleSubmit}>
           <div className="input-group mb-3">
             <input type="text" value={cnpj} onChange={handleChange} className="form-control form-control-lg" placeholder="CNPJ" aria-label="CNPJ" aria-describedby="cnpj" />
             <button className="input-group-text" id="cnpj" type="submit">OK</button>
           </div>
         </form>
+
+        {dcps.length !== 0 && (
+
         <div>
-          <h4 className='text-center'>{empresa}</h4>
-          <table className="table text-center">
+          <h4 className='text-center fw-bold fs-6 border border-white bg-white bg-opacity-25 p-2 my-3'>{empresa}</h4>
+          
+          <table id="tableResult" className="table text-center table-hover">
             <thead>
-              <tr>
+              <tr className="border-bottom-0">
+                <th></th>
                 <th scope="col">Ano</th>
                 <th scope="col">Trimestre</th>
+                
               </tr>
             </thead>
             <tbody>
               {dcps.map(dcp => {
                 return (
-                  <tr key={dcp._id} onClick={() => handleClick(dcp.ano, dcp.trimestre)}>
-                    <td><i className="bi bi-file-earmark-text me-2"></i>{dcp.ano}</td>
+                  <tr key={dcp._id} id={dcp._id} onClick={() => {handleClick(dcp.ano, dcp.trimestre); handleSelectedRow(dcp._id)} } style={{cursor: "pointer"}}>
+                    <td><i className="bi bi-file-earmark-text me-2"></i></td>
+                    <td>{dcp.ano}</td>
                     <td>{dcp.trimestre}</td>
+                    
                   </tr>
                 )
               })}
             </tbody>
           </table>
         </div>
+
+        )}
+
+
       </div>
+
+
 
       {/* DCP E ANÁLISES */}
       <div className='container mx-5'>
