@@ -77,6 +77,8 @@ function Analises() {
       params: { cnpj: cnpjLimpo, trim: trimestre, ano: ano },
     });
     setGomoExport(exportacoes(resposta.data, ano, trimestre));
+
+    setIsLoading(false);
   }
 
   return (
