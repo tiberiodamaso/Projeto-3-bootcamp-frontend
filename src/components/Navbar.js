@@ -25,12 +25,20 @@ function Navbar() {
         </Link>
 
         <nav className="d-inline-flex mt-2 mt-md-0 ms-md-auto align-items-center">
-          <Link className="fs-5 me-3 py-2 text-dark text-decoration-none" to="/signup">Criar conta</Link>
+          
           {!loggedInUser &&
-            <Link className="fs-5 me-3 py-2 text-dark text-decoration-none" to="/"><i className="bi bi-person"></i>Login</Link>
+            <>
+              <Link className="fs-5 me-3 py-2 text-dark text-decoration-none" to="/signup">Criar conta</Link>
+              <Link className="fs-5 me-3 py-2 text-dark text-decoration-none" to="/"><i className="bi bi-person"></i>Login</Link>
+            </>
           }
           {loggedInUser &&
           <div className='d-flex align-items-end'>
+
+            {loggedInUser.user.role === "admin" && (                     
+              <Link className="fs-5 py-2 me-3 text-dark text-decoration-none" to="/logs">Logs</Link>                   
+            )}
+
             <Link className="fs-5 py-2 me-3 text-dark text-decoration-none" to="/analises">Análises</Link>
             <Link className="fs-5 py-2 text-dark text-decoration-none" to="/profile">Perfil</Link>
             <button className="fs-5 me-3 py-2 text-dark text-decoration-none btn" onClick={handleLogout}>Logout</button>

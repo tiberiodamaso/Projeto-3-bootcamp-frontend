@@ -9,6 +9,7 @@ import Error from './pages/Error.js'
 import { Toaster } from "react-hot-toast";
 import Navbar from './components/Navbar.js'
 import ProtectedRoute from './components/ProtectedRoute.js'
+import ProtectedRouteAdmin from './components/ProtectedRouteAdmin.js'
 
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
         <Route path='/signup' element={<Signup />} />
         <Route path='/profile' element={<ProtectedRoute Component={Profile} />} />
         <Route path='/analises' element={<ProtectedRoute Component={Analises} />} />
-        <Route path='/logs' element={<ProtectedRoute Component={Logs} />} />
+        <Route path='/logs' element={<ProtectedRouteAdmin Component={Logs} />} />
         <Route path='*' element={<Error />} />
       </Routes>
 

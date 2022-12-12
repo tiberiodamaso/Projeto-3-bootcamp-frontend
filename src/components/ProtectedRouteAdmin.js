@@ -3,12 +3,14 @@ import { AuthContext } from '../contexts/authContext.js'
 import { Navigate } from 'react-router-dom'
 
 function ProtectedRouteAdmin({Component}) {
+  
   const { loggedInUser } = useContext(AuthContext)
-  if (loggedInUser.role === 'admin') {
-    // Mostra o componente
+  
+  if (loggedInUser && loggedInUser.user.role === "admin"){
     return <Component />
-  } else {
-    // Navega o usuário para a página de login
+  } 
+
+  if (!loggedInUser || loggedInUser.user.role === "user") {
     return <Navigate to='/' />
   }
 }
