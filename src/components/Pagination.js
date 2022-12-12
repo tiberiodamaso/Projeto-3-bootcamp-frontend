@@ -2,10 +2,9 @@ function Pagination(props) {
 
     const { currentPage, postsPerPage, totalPosts, paginate, nextPage, prevPage } = props;
     const pageNumbers = [];
+    const totalPages = Math.ceil(totalPosts / postsPerPage)
 
-    console.log(currentPage)
-
-    for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
+    for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
     }
 
@@ -13,7 +12,10 @@ function Pagination(props) {
         <div>
           <nav aria-label="Page navigation">
             <ul className="pagination justify-content-center">
-              <li className="page-item"><span className="page-link" onClick={() => prevPage()} style={{cursor: "pointer"}}>Previous</span></li>
+              
+              
+              <li className={`page-item ${currentPage===1 ? "disabled" : ""}`}><span className="page-link" onClick={() => prevPage()} style={{cursor: "pointer"}}>Previous</span></li>
+              
               
               {pageNumbers.map(num => (                        
                         
@@ -22,7 +24,7 @@ function Pagination(props) {
                         </li>
                     ))}
 
-              <li className="page-item"><span className="page-link" onClick={() => nextPage()} style={{cursor: "pointer"}}>Next</span></li>
+              <li className={`page-item ${currentPage===totalPages ? "disabled" : ""}`}><span className="page-link" onClick={() => nextPage()} style={{cursor: "pointer"}}>Next</span></li>
             </ul>
           </nav>
         </div>
