@@ -60,17 +60,17 @@ function Analises() {
 
   // 
   async function handleClick(ano, trimestre) {
-    
     let dcpSection = document.querySelector('#dcpSection')
-    const dcpsTrimestre = await dcps.filter(element => {
-        return (element.ano === ano && element.trimestre === trimestre)
-      })
-    setDcp1(dcpsTrimestre[0])
-    setDcp2(dcpsTrimestre[1])
-    setDcp3(dcpsTrimestre[2])
+    const cnpjLimpo = cnpj.replace(/\D/g, "")
+    console.log(ano, trimestre)
+    const response = await api.get(`/dcp/all-dcp?cnpj=${cnpjLimpo}&ano=${ano}&trimestre=${trimestre}`)
+    console.log(response.data)
+    setDcp1(response.data[0])
+    setDcp2(response.data[1])
+    setDcp3(response.data[2])
     dcpSection.classList.toggle('d-none')
-    setIsLoading(false)
   }
+
   
   return (
     <div className='d-flex'>
@@ -151,6 +151,15 @@ function Analises() {
                       </tr>
                       <tr>
                         <td>Linha 2</td>
+                        <td>{dcp1.linha_2}</td>
+                        <td></td>
+                        <td>{dcp2.linha_2}</td>
+                        <td></td>
+                        <td>{dcp3.linha_2}</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>Linha 3</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -178,6 +187,15 @@ function Analises() {
                       </tr>
                       <tr>
                         <td>Linha 6</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>Linha 7</td>
                         <td></td>
                         <td></td>
                         <td></td>
