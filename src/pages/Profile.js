@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react'
 import api from '../api/api'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import { AuthContext } from '../contexts/authContext'
 
 
 function Profile() {
+  const {setLoggedInUser} = useContext(AuthContext)
   const [img, setImg] = useState()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
@@ -62,7 +65,7 @@ function Profile() {
     try {
       await api.delete('/user/delete', user)
       localStorage.removeItem('loggedInUser')
-      setReload(!reload)
+      setLoggedInUser(null)
       navigate('/');
       toast.success("Conta excluída com sucesso.");
     } catch (error) {

@@ -7,7 +7,6 @@ function Navbar() {
   const navigate = useNavigate()
   const { loggedInUser, setLoggedInUser } = useContext(AuthContext)
 
-
   function handleLogout() {
     localStorage.removeItem('loggedInUser')
     setLoggedInUser(null)
