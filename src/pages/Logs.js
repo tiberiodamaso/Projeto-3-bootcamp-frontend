@@ -81,7 +81,7 @@ function Logs() {
             />
             <span className="input-group-text" id="basic-addon1"><i className="bi bi-search"></i></span>
           </div>
-          Foram encontrado <span className="text-primary fw-bold">{posts.length}</span> registros.
+          Foram encontrados <span className="text-primary fw-bold">{posts.length}</span> registros.
         </div>
 
         <table className="table table-striped table-sm">
