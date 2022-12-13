@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 
 function LinhaDCP({ dcpsTrimestre, gomo, nLinha }) {
-const descricoes = require('../utils/descricaolinhas.json');
+  
+  const descricoes = require('../utils/descricaolinhas.json');
+  
   const navigate = useNavigate()
   const clicavel = [4, 5]
   const [dcp1, dcp2, dcp3] = dcpsTrimestre
