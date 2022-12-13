@@ -143,7 +143,6 @@ function Analises() {
                     <td><i className="bi bi-file-earmark-text me-2"></i></td>
                     <td>{dcp.ano}</td>
                     <td>{dcp.trimestre}</td>
-                    
                   </tr>
                 );
               })}
@@ -535,7 +534,7 @@ function Analises() {
         </div>
 
         {/* BOTÕES */}
-        <div className="d-flex justify-content-end">
+        <div className="d-flex justify-content-end py-5 mx-3">
           <button className="btn btn-primary mx-3">Salvar análise</button>
           <button className="btn btn-primary">Gerar relattório</button>
         </div>
