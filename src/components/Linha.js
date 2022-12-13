@@ -3,10 +3,16 @@ import { useNavigate } from "react-router-dom";
 function LinhaDCP({ dcpsTrimestre, gomo, nLinha }) {
   
   const descricoes = require('../utils/descricaolinhas.json');
-  
   const navigate = useNavigate()
-  const clicavel = [4, 5]
+  const clicavel = [4, 5, 9] // Linhas da DCP que são clicáveis
   const [dcp1, dcp2, dcp3] = dcpsTrimestre
+  // const linhas = Array.from(document.querySelectorAll('.linha'))
+  // const linha4 = linhas.filter(linha => linha.parentElement.dataset.linha === '4')
+  // const tr = linhas.filter(linha => linha.parentNode.dataset.linha === 4)
+  // console.log(tr)
+  // const trLinha = teste.previousSibling
+  // console.log(trLinha.dataset.linha)
+
 
   function getNotas(e) {
     // console.log(e)
@@ -26,13 +32,14 @@ function LinhaDCP({ dcpsTrimestre, gomo, nLinha }) {
   }
 
   return (
-    <tr>
-      <td data-toggle="tooltip" data-placement="right" title={descricoes[nLinha]} >Linha {nLinha}</td>
+    <tr id={`teste${nLinha}`} data-linha={nLinha}>
+      <td data-toggle="tooltip" data-placement="right" title={descricoes[nLinha]}>Linha {nLinha}</td>
       <td>{dcp1[`linha_${nLinha}`].toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
       <td
         onClick={getNotas}
-        className={`${Math.floor(dcp1[`linha_${nLinha}`]) !== Math.floor(gomo[0][`linha_${nLinha}`]) ? "text-danger" : ""}`}
+        className={`linha ${Math.floor(dcp1[`linha_${nLinha}`]) !== Math.floor(gomo[0][`linha_${nLinha}`]) ? "text-danger" : ""}`}
         data-mes={dcp1.mes}
+        // style={  document.getElementById(`teste${nLinha}`).dataset.linha === '4' ? {cursor: 'pointer'} : {}}
       >
         {gomo[0][`linha_${nLinha}`].toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
       </td>
