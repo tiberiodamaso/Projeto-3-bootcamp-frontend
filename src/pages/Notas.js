@@ -10,7 +10,6 @@ function Notas() {
   const ano = parseInt(location.state.ano)
   const mes = parseInt(location.state.mes)
   const nLinha = location.state.nLinha
-  // console.log(cnpj, ano, mes)
   const [notas, setNotas] = useState([])
   const [isLoading, setIsLoading] = useState(true);
 
@@ -54,21 +53,6 @@ function Notas() {
               <LinhaNota nota={nota} key={nota._id}/>
             )
           })}
-          {/* {notas.map(nota => {
-            return (
-              <tr>
-                <td>{nota.operacao}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            )
-          })} */}
         </tbody>
         )}
         

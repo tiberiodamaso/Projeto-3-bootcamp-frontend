@@ -104,23 +104,6 @@ function Analises() {
 
   }
 
-
-  // Checa se os valores declarados e calculados são divergentes
-  function checkValues() {
-    let declarado1 = document.querySelector('#declarado1')
-    let calculado1 = document.querySelector('#calculado1')
-    if (declarado1.innerText !== calculado1.innerText) calculado1.classList.add('text-danger')
-  }
-
-  // Checa se os valores declarados e calculados são divergentes
-  function test(e) {
-    const event = e
-    console.log(e)
-    let declarado1 = document.querySelector('#declarado1')
-    let calculado1 = document.querySelector('#calculado1')
-    if (declarado1.innerText !== calculado1.innerText) calculado1.classList.add('text-danger')
-  }
-
   return (
 
     <div className='d-flex'>
