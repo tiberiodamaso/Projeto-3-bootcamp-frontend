@@ -68,7 +68,7 @@ function exportacoes(notas, ano, trim) {
 
     exportacoes[x - lower] = periodo;
   }
-  console.log(exportacoes);
+  // console.log(exportacoes);
   return exportacoes;
 }
 
@@ -113,7 +113,7 @@ function receitas(notas, ano, trim) {
     "7127",
   ];
   const { lower, upper } = trimestre(trim);
-  console.log("no receitas, lower e upper", lower, upper);
+  // console.log("no receitas, lower e upper", lower, upper);
   const receitas = [];
   for (let x = lower; x <= upper; x++) {
     const periodo = {
@@ -123,13 +123,13 @@ function receitas(notas, ano, trim) {
     };
     receitas[x - lower] = periodo;
   }
-  console.log("la vai receitas");
-  console.log(receitas);
+  // console.log("la vai receitas");
+  // console.log(receitas);
   return receitas;
 }
 
 function insumos(notas, ano, trim) {
-  console.log("tamo ai nos insumos");
+  // console.log("tamo ai nos insumos");
   const cfopInsumos = [
     "1101",
     "1111",
@@ -191,7 +191,7 @@ function insumos(notas, ano, trim) {
 
     insumos[x - lower] = periodo;
   }
-  console.log(insumos);
+  // console.log(insumos);
   return insumos;
 }
 

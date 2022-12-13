@@ -1,16 +1,13 @@
 import { useState, useEffect } from "react";
 import api from "../api/api";
 import { exportacoes, receitas, insumos } from "../utils/montaDCP";
-import Linha from "../components/Linha";
+import { LinhaDCP } from "../components/Linha";
 
 function Analises() {
   const [dcps, setDCPs] = useState([]);
   const [cnpj, setCnpj] = useState("");
   const [empresa, setEmpresa] = useState("");
   const [dcpsTrimestre, setDcpsTrimestre] = useState([])
-  // const [dcp1, setDcp1] = useState({});
-  // const [dcp2, setDcp2] = useState({});
-  // const [dcp3, setDcp3] = useState({});
   const [gomoExport, setGomoExport] = useState([]);
   const [meses, setMeses] = useState([]);
   const [gomoReceita, setGomoReceita] = useState([]);
@@ -63,33 +60,34 @@ function Analises() {
     }
   }
 
-  // Recupera DCPs do trimestre
+  // Recupera DCPs e nfes do trimestre
   async function handleClick(ano, trimestre) {
     let dcpSection = document.querySelector("#dcpSection");
     let dcpMetaData = document.querySelector("#dcpMetaData");
+    let acoesId = document.querySelector("#acoesId");
     dcpSection.classList.remove("d-none");
     dcpMetaData.innerText = `${trimestre}/${ano}`;
+    acoesId.classList.remove("d-none");
     if (trimestre === 1) setMeses(['Jan', 'Fev', 'Mar'])
     if (trimestre === 2) setMeses(['Abr', 'Mai', 'Jun'])
     if (trimestre === 3) setMeses(['Jul', 'Ago', 'Set'])
     if (trimestre === 4) setMeses(['Out', 'Nov', 'Dez'])
     const cnpjLimpo = cnpj.replace(/\D/g, "");
+
+    // Recupera DCPs do trimestre
     const response = await api.get(
       `/dcp/all-dcp?cnpj=${cnpjLimpo}&ano=${ano}&trimestre=${trimestre}`
     );
     setDcpsTrimestre(response.data)
-    // setDcp1(response.data[0]);
-    // setDcp2(response.data[1]);
-    // setDcp3(response.data[2]);
 
-
+    // Recupera nfes do trimestre
     const resposta = await api.get("/nfe/all-nfe", {
       params: { cnpj: cnpjLimpo, trim: trimestre, ano: ano },
     });
     setGomoReceita(receitas(resposta.data, ano, trimestre));
     setGomoInsumo(insumos(resposta.data, ano, trimestre));
-    console.log(insumos(resposta.data, ano, trimestre));
     setGomoExport(exportacoes(resposta.data, ano, trimestre));
+
     setIsLoading(false);
   }
 
@@ -228,13 +226,13 @@ function Analises() {
                     </thead>
                     {!isLoading && (
                       <tbody className="table-group-divider">
-                      <Linha dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={1} />
-                      <Linha dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={2} />
-                      <Linha dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={3} />
-                      <Linha dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={4} />
-                      <Linha dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={5} />
-                      <Linha dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={6} />
-                      <Linha dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={7} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={1} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={2} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={3} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={4} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={5} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={6} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={7} />
                       </tbody>
                     )}
                   </table>
@@ -242,7 +240,7 @@ function Analises() {
               </div>
             </div>
 
-            {/* MATÉRIAS PRIMAS E EMBALAGENS */}
+            {/* RECEITA OPERACIONAL BRUTA */}
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingTwo">
                 <button
@@ -284,33 +282,9 @@ function Analises() {
                     </thead>
                     {!isLoading && (
                       <tbody className="table-group-divider">
-                        <tr>
-                          <td>Linha 8</td>
-                          <td></td>
-                          <td>{gomoReceita[0].linha_8}</td>
-                          <td></td>
-                          <td>{gomoReceita[1].linha_8}</td>
-                          <td></td>
-                          <td>{gomoReceita[2].linha_8}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 9</td>
-                          <td></td>
-                          <td>{gomoReceita[0].linha_8}</td>
-                          <td></td>
-                          <td>{gomoReceita[1].linha_9}</td>
-                          <td></td>
-                          <td>{gomoReceita[2].linha_9}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 10</td>
-                          <td></td>
-                          <td>{gomoReceita[0].linha_10}</td>
-                          <td></td>
-                          <td>{gomoReceita[1].linha_10}</td>
-                          <td></td>
-                          <td>{gomoReceita[2].linha_10}</td>
-                        </tr>
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoReceita} nLinha={8} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoReceita} nLinha={9} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoReceita} nLinha={10} />
                       </tbody>
                     )}
                   </table>
@@ -318,7 +292,7 @@ function Analises() {
               </div>
             </div>
 
-            {/* PRESTAÇÃO DE SERVIÇOS */}
+            {/* MATÉRIAS PRIMAS E EMBALAGENS */}
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingThree">
                 <button
@@ -360,156 +334,30 @@ function Analises() {
                     </thead>
                     {!isLoading && (
                       <tbody className="table-group-divider">
-                        <tr>
-                          <td>Linha 11</td>
-                          <td></td>
-                          <td>{gomoInsumo[0].linha_11}</td>
-                          <td></td>
-                          <td>{gomoInsumo[1].linha_11}</td>
-                          <td></td>
-                          <td>{gomoInsumo[2].linha_11}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 12</td>
-                          <td></td>
-                          <td>{gomoInsumo[0].linha_12}</td>
-                          <td></td>
-                          <td>{gomoInsumo[1].linha_12}</td>
-                          <td></td>
-                          <td>{gomoInsumo[2].linha_12}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 13</td>
-                          <td></td>
-                          <td>{gomoInsumo[0].linha_13}</td>
-                          <td></td>
-                          <td>{gomoInsumo[1].linha_13}</td>
-                          <td></td>
-                          <td>{gomoInsumo[2].linha_13}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 14</td>
-                          <td></td>
-                          <td>{gomoInsumo[0].linha_14}</td>
-                          <td></td>
-                          <td>{gomoInsumo[1].linha_14}</td>
-                          <td></td>
-                          <td>{gomoInsumo[2].linha_14}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 15</td>
-                          <td></td>
-                          <td>{gomoInsumo[0].linha_15}</td>
-                          <td></td>
-                          <td>{gomoInsumo[1].linha_15}</td>
-                          <td></td>
-                          <td>{gomoInsumo[2].linha_15}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 16</td>
-                          <td></td>
-                          <td>{gomoInsumo[0].linha_16}</td>
-                          <td></td>
-                          <td>{gomoInsumo[1].linha_16}</td>
-                          <td></td>
-                          <td>{gomoInsumo[2].linha_16}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 17</td>
-                          <td></td>
-                          <td>{gomoInsumo[0].linha_17}</td>
-                          <td></td>
-                          <td>{gomoInsumo[1].linha_17}</td>
-                          <td></td>
-                          <td>{gomoInsumo[2].linha_17}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 18</td>
-                          <td></td>
-                          <td>{gomoInsumo[0].linha_18}</td>
-                          <td></td>
-                          <td>{gomoInsumo[1].linha_18}</td>
-                          <td></td>
-                          <td>{gomoInsumo[2].linha_18}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 19</td>
-                          <td></td>
-                          <td>{gomoInsumo[0].linha_19}</td>
-                          <td></td>
-                          <td>{gomoInsumo[1].linha_19}</td>
-                          <td></td>
-                          <td>{gomoInsumo[2].linha_19}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 20</td>
-                          <td></td>
-                          <td>{gomoInsumo[0].linha_20}</td>
-                          <td></td>
-                          <td>{gomoInsumo[1].linha_20}</td>
-                          <td></td>
-                          <td>{gomoInsumo[2].linha_20}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 21</td>
-                          <td></td>
-                          <td>{gomoInsumo[0].linha_21}</td>
-                          <td></td>
-                          <td>{gomoInsumo[1].linha_21}</td>
-                          <td></td>
-                          <td>{gomoInsumo[2].linha_21}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 22</td>
-                          <td></td>
-                          <td>{gomoInsumo[0].linha_22}</td>
-                          <td></td>
-                          <td>{gomoInsumo[1].linha_22}</td>
-                          <td></td>
-                          <td>{gomoInsumo[2].linha_22}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 23</td>
-                          <td></td>
-                          <td>{gomoInsumo[0].linha_23}</td>
-                          <td></td>
-                          <td>{gomoInsumo[1].linha_23}</td>
-                          <td></td>
-                          <td>{gomoInsumo[2].linha_23}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 24</td>
-                          <td></td>
-                          <td>{gomoInsumo[0].linha_24}</td>
-                          <td></td>
-                          <td>{gomoInsumo[1].linha_24}</td>
-                          <td></td>
-                          <td>{gomoInsumo[2].linha_24}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 25</td>
-                          <td></td>
-                          <td>{gomoInsumo[0].linha_25}</td>
-                          <td></td>
-                          <td>{gomoInsumo[1].linha_25}</td>
-                          <td></td>
-                          <td>{gomoInsumo[2].linha_25}</td>
-                        </tr>
-                        <tr>
-                          <td>Linha 26</td>
-                          <td></td>
-                          <td>{gomoInsumo[0].linha_26}</td>
-                          <td></td>
-                          <td>{gomoInsumo[1].linha_26}</td>
-                          <td></td>
-                          <td>{gomoInsumo[2].linha_26}</td>
-                        </tr>
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={11} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={12} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={13} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={14} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={15} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={16} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={17} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={18} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={19} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={20} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={21} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={22} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={23} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={24} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={25} />
+                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={26} />
                       </tbody>
                     )}
                   </table>
                 </div>
               </div>
             </div>
+
+            {/* PRESTAÇÃO DE SERVIÇOS  */}
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingFour">
                 <button
@@ -588,17 +436,25 @@ function Analises() {
           </div>
         </div>
 
+        {/* OBSERVAÇÕES */}
+        <div id="acoesId" className="d-none mx-3 py-3">
+        <div className="py-3">
+          <textarea className="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Escreva as observações da análise"></textarea>
+        </div>
+
+        {/* BOTÕES */}
+        <div className="d-flex justify-content-end py-3">
+          <button className="btn btn-primary mx-3">Salvar análise</button>
+          <button className="btn btn-primary">Gerar relatório</button>
+        </div>
+        </div>
+
         {/* ANALISES */}
         <div className="">
           <h2 className="py-5 mx-3">Análises</h2>
         </div>
-
-        {/* BOTÕES */}
-        <div className="d-flex justify-content-end py-5 mx-3">
-          <button className="btn btn-primary mx-3">Salvar análise</button>
-          <button className="btn btn-primary">Gerar relattório</button>
-        </div>
       </div>
+
     </div>
   );
 }
