@@ -178,7 +178,17 @@ function insumos(notas, ano, trim) {
       linha_17:
         somaAteMes(notas, cfopInsumos, 2020, x) /
         somaAteMes(notas, cfopCompraTotal, 2020, x),
+      linha_18: 0,
+      linha_19: 0,
+      linha_20: 0,
+      linha_21: 0,
+      linha_22: 0,
+      linha_23: 0,
+      linha_24: 0,
+      linha_25: 0,
+      linha_26: 0,
     };
+
     insumos[x - lower] = periodo;
   }
   console.log(insumos);

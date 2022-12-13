@@ -429,35 +429,37 @@ function Analises() {
                         <th>Calculado</th>
                       </tr>
                     </thead>
-                    <tbody className="table-group-divider">
-                      <tr>
-                        <td>Linha 8</td>
-                        <td></td>
-                        <td>{gomoReceita[0].linha_8}</td>
-                        <td></td>
-                        <td>{gomoReceita[1].linha_8}</td>
-                        <td></td>
-                        <td>{gomoReceita[2].linha_8}</td>
-                      </tr>
-                      <tr>
-                        <td>Linha 9</td>
-                        <td></td>
-                        <td>{gomoReceita[0].linha_8}</td>
-                        <td></td>
-                        <td>{gomoReceita[1].linha_9}</td>
-                        <td></td>
-                        <td>{gomoReceita[2].linha_9}</td>
-                      </tr>
-                      <tr>
-                        <td>Linha 10</td>
-                        <td></td>
-                        <td>{gomoReceita[0].linha_10}</td>
-                        <td></td>
-                        <td>{gomoReceita[1].linha_10}</td>
-                        <td></td>
-                        <td>{gomoReceita[2].linha_10}</td>
-                      </tr>
-                    </tbody>
+                    {!isLoading && (
+                      <tbody className="table-group-divider">
+                        <tr>
+                          <td>Linha 8</td>
+                          <td></td>
+                          <td>{gomoReceita[0].linha_8}</td>
+                          <td></td>
+                          <td>{gomoReceita[1].linha_8}</td>
+                          <td></td>
+                          <td>{gomoReceita[2].linha_8}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 9</td>
+                          <td></td>
+                          <td>{gomoReceita[0].linha_8}</td>
+                          <td></td>
+                          <td>{gomoReceita[1].linha_9}</td>
+                          <td></td>
+                          <td>{gomoReceita[2].linha_9}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 10</td>
+                          <td></td>
+                          <td>{gomoReceita[0].linha_10}</td>
+                          <td></td>
+                          <td>{gomoReceita[1].linha_10}</td>
+                          <td></td>
+                          <td>{gomoReceita[2].linha_10}</td>
+                        </tr>
+                      </tbody>
+                    )}
                   </table>
                 </div>
               </div>
@@ -502,71 +504,154 @@ function Analises() {
                         <th>Calculado</th>
                       </tr>
                     </thead>
-                    <tbody className="table-group-divider">
-                      <tr>
-                        <td>Linha 11</td>
-                        <td></td>
-                        <td>{gomoInsumo[0].linha_11}</td>
-                        <td></td>
-                        <td>{gomoInsumo[1].linha_11}</td>
-                        <td></td>
-                        <td>{gomoInsumo[2].linha_11}</td>
-                      </tr>
-                      <tr>
-                        <td>Linha 12</td>
-                        <td></td>
-                        <td>{gomoInsumo[0].linha_12}</td>
-                        <td></td>
-                        <td>{gomoInsumo[1].linha_12}</td>
-                        <td></td>
-                        <td>{gomoInsumo[2].linha_12}</td>
-                      </tr>
-                      <tr>
-                        <td>Linha 13</td>
-                        <td></td>
-                        <td>{gomoInsumo[0].linha_13}</td>
-                        <td></td>
-                        <td>{gomoInsumo[1].linha_13}</td>
-                        <td></td>
-                        <td>{gomoInsumo[2].linha_13}</td>
-                      </tr>
-                      <tr>
-                        <td>Linha 14</td>
-                        <td></td>
-                        <td>{gomoInsumo[0].linha_14}</td>
-                        <td></td>
-                        <td>{gomoInsumo[1].linha_14}</td>
-                        <td></td>
-                        <td>{gomoInsumo[2].linha_14}</td>
-                      </tr>
-                      <tr>
-                        <td>Linha 15</td>
-                        <td></td>
-                        <td>{gomoInsumo[0].linha_15}</td>
-                        <td></td>
-                        <td>{gomoInsumo[1].linha_15}</td>
-                        <td></td>
-                        <td>{gomoInsumo[2].linha_15}</td>
-                      </tr>
-                      <tr>
-                        <td>Linha 16</td>
-                        <td></td>
-                        <td>{gomoInsumo[0].linha_16}</td>
-                        <td></td>
-                        <td>{gomoInsumo[1].linha_16}</td>
-                        <td></td>
-                        <td>{gomoInsumo[2].linha_16}</td>
-                      </tr>
-                      <tr>
-                        <td>Linha 17</td>
-                        <td></td>
-                        <td>{gomoInsumo[0].linha_17}</td>
-                        <td></td>
-                        <td>{gomoInsumo[1].linha_17}</td>
-                        <td></td>
-                        <td>{gomoInsumo[2].linha_17}</td>
-                      </tr>
-                    </tbody>
+                    {!isLoading && (
+                      <tbody className="table-group-divider">
+                        <tr>
+                          <td>Linha 11</td>
+                          <td></td>
+                          <td>{gomoInsumo[0].linha_11}</td>
+                          <td></td>
+                          <td>{gomoInsumo[1].linha_11}</td>
+                          <td></td>
+                          <td>{gomoInsumo[2].linha_11}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 12</td>
+                          <td></td>
+                          <td>{gomoInsumo[0].linha_12}</td>
+                          <td></td>
+                          <td>{gomoInsumo[1].linha_12}</td>
+                          <td></td>
+                          <td>{gomoInsumo[2].linha_12}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 13</td>
+                          <td></td>
+                          <td>{gomoInsumo[0].linha_13}</td>
+                          <td></td>
+                          <td>{gomoInsumo[1].linha_13}</td>
+                          <td></td>
+                          <td>{gomoInsumo[2].linha_13}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 14</td>
+                          <td></td>
+                          <td>{gomoInsumo[0].linha_14}</td>
+                          <td></td>
+                          <td>{gomoInsumo[1].linha_14}</td>
+                          <td></td>
+                          <td>{gomoInsumo[2].linha_14}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 15</td>
+                          <td></td>
+                          <td>{gomoInsumo[0].linha_15}</td>
+                          <td></td>
+                          <td>{gomoInsumo[1].linha_15}</td>
+                          <td></td>
+                          <td>{gomoInsumo[2].linha_15}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 16</td>
+                          <td></td>
+                          <td>{gomoInsumo[0].linha_16}</td>
+                          <td></td>
+                          <td>{gomoInsumo[1].linha_16}</td>
+                          <td></td>
+                          <td>{gomoInsumo[2].linha_16}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 17</td>
+                          <td></td>
+                          <td>{gomoInsumo[0].linha_17}</td>
+                          <td></td>
+                          <td>{gomoInsumo[1].linha_17}</td>
+                          <td></td>
+                          <td>{gomoInsumo[2].linha_17}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 18</td>
+                          <td></td>
+                          <td>{gomoInsumo[0].linha_18}</td>
+                          <td></td>
+                          <td>{gomoInsumo[1].linha_18}</td>
+                          <td></td>
+                          <td>{gomoInsumo[2].linha_18}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 19</td>
+                          <td></td>
+                          <td>{gomoInsumo[0].linha_19}</td>
+                          <td></td>
+                          <td>{gomoInsumo[1].linha_19}</td>
+                          <td></td>
+                          <td>{gomoInsumo[2].linha_19}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 20</td>
+                          <td></td>
+                          <td>{gomoInsumo[0].linha_20}</td>
+                          <td></td>
+                          <td>{gomoInsumo[1].linha_20}</td>
+                          <td></td>
+                          <td>{gomoInsumo[2].linha_20}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 21</td>
+                          <td></td>
+                          <td>{gomoInsumo[0].linha_21}</td>
+                          <td></td>
+                          <td>{gomoInsumo[1].linha_21}</td>
+                          <td></td>
+                          <td>{gomoInsumo[2].linha_21}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 22</td>
+                          <td></td>
+                          <td>{gomoInsumo[0].linha_22}</td>
+                          <td></td>
+                          <td>{gomoInsumo[1].linha_22}</td>
+                          <td></td>
+                          <td>{gomoInsumo[2].linha_22}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 23</td>
+                          <td></td>
+                          <td>{gomoInsumo[0].linha_23}</td>
+                          <td></td>
+                          <td>{gomoInsumo[1].linha_23}</td>
+                          <td></td>
+                          <td>{gomoInsumo[2].linha_23}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 24</td>
+                          <td></td>
+                          <td>{gomoInsumo[0].linha_24}</td>
+                          <td></td>
+                          <td>{gomoInsumo[1].linha_24}</td>
+                          <td></td>
+                          <td>{gomoInsumo[2].linha_24}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 25</td>
+                          <td></td>
+                          <td>{gomoInsumo[0].linha_25}</td>
+                          <td></td>
+                          <td>{gomoInsumo[1].linha_25}</td>
+                          <td></td>
+                          <td>{gomoInsumo[2].linha_25}</td>
+                        </tr>
+                        <tr>
+                          <td>Linha 26</td>
+                          <td></td>
+                          <td>{gomoInsumo[0].linha_26}</td>
+                          <td></td>
+                          <td>{gomoInsumo[1].linha_26}</td>
+                          <td></td>
+                          <td>{gomoInsumo[2].linha_26}</td>
+                        </tr>
+                      </tbody>
+                    )}
                   </table>
                 </div>
               </div>
@@ -610,35 +695,37 @@ function Analises() {
                         <th>Calculado</th>
                       </tr>
                     </thead>
-                    <tbody className="table-group-divider">
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                    </tbody>
+                    {!isLoading && (
+                      <tbody className="table-group-divider">
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    )}
                   </table>
                 </div>
               </div>
