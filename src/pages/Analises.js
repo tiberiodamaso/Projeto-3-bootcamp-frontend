@@ -11,6 +11,7 @@ function Analises() {
   const [dcp2, setDcp2] = useState({});
   const [dcp3, setDcp3] = useState({});
   const [gomoExport, setGomoExport] = useState([]);
+  const [meses, setMeses] = useState([]);
   const [gomoReceita, setGomoReceita] = useState([]);
   const [gomoInsumo, setGomoInsumo] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -61,10 +62,14 @@ function Analises() {
     }
   }
 
-  //
+  // Recupera DCPs do trimestre
   async function handleClick(ano, trimestre) {
     let dcpSection = document.querySelector("#dcpSection");
     let dcpMetaData = document.querySelector("#dcpMetaData");
+    if (trimestre === 1) setMeses(['Jan', 'Fev', 'Mar'])
+    if (trimestre === 2) setMeses(['Abr', 'Mai', 'Jun'])
+    if (trimestre === 3) setMeses(['Jul', 'Ago', 'Set'])
+    if (trimestre === 4) setMeses(['Out', 'Nov', 'Dez'])
     const cnpjLimpo = cnpj.replace(/\D/g, "");
     const response = await api.get(
       `/dcp/all-dcp?cnpj=${cnpjLimpo}&ano=${ano}&trimestre=${trimestre}`
@@ -72,43 +77,58 @@ function Analises() {
     setDcp1(response.data[0]);
     setDcp2(response.data[1]);
     setDcp3(response.data[2]);
-    dcpSection.classList.toggle("d-none");
+    dcpSection.classList.remove("d-none");
     dcpMetaData.innerText = `${trimestre}/${ano}`;
 
     const resposta = await api.get("/nfe/all-nfe", {
       params: { cnpj: cnpjLimpo, trim: trimestre, ano: ano },
     });
     setGomoExport(exportacoes(resposta.data, ano, trimestre));
-    setGomoReceita(receitas(resposta.data, ano, trimestre));
-    setGomoInsumo(insumos(resposta.data, ano, trimestre));
-    console.log(insumos(resposta.data, ano, trimestre));
-
     setIsLoading(false);
   }
 
+  // Estiliza a tabela quando clica em uma DCP
   function handleSelectedRow(id) {
+
     const table = document.getElementById("tableResult");
     const rows = table.getElementsByTagName("tr");
-
-    const selectedRow = document.getElementById(id);
-
+    const selectedRow = document.getElementById(id)
+    setGomoReceita(receitas(resposta.data, ano, trimestre));
+    setGomoInsumo(insumos(resposta.data, ano, trimestre));
+    console.log(insumos(resposta.data, ano, trimestre));
     for (let i = 0; i < rows.length; i++) {
       table.rows[i].classList.remove("bg-white");
       table.rows[i].classList.remove("bg-opacity-50");
     }
 
-    selectedRow.classList.add("bg-white");
-    selectedRow.classList.add("bg-opacity-50");
+    setIsLoading(false);
+  }
+
+
+  // Checa se os valores declarados e calculados são divergentes
+  function checkValues(){
+    let declarado1 = document.querySelector('#declarado1')
+    let calculado1 = document.querySelector('#calculado1')
+    if (declarado1.innerText !== calculado1.innerText) calculado1.classList.add('text-danger')
+  }
+
+  // Checa se os valores declarados e calculados são divergentes
+  function test(e){
+    const event = e
+    console.log(e)
+    let declarado1 = document.querySelector('#declarado1')
+    let calculado1 = document.querySelector('#calculado1')
+    if (declarado1.innerText !== calculado1.innerText) calculado1.classList.add('text-danger')
   }
 
   return (
-    <div className="d-flex">
+
+    <div className='d-flex'>
+
       {/* SIDEBAR */}
-      <div
-        className="d-flex flex-column flex-shrink-0 px-3 vh-100 bg-dark bg-opacity-10"
-        style={{ width: 305 }}
-      >
-        <form className="mt-5" onSubmit={handleSubmit}>
+      <div className="d-flex flex-column flex-shrink-0 px-3 vh-100 bg-dark bg-opacity-10" style={{ width: 305 }}>
+
+        <form className='mt-5' onSubmit={handleSubmit}>
           <div className="input-group mb-3">
             <input
               type="text"
@@ -131,31 +151,30 @@ function Analises() {
               {empresa}
             </h4>
 
-        <div>
-          <h4 className='text-center fw-bold fs-6 border border-white bg-white bg-opacity-25 p-2 my-3'>{empresa}</h4>
-          
-          <table id="tableResult" className="table text-center table-hover">
-            <thead>
-              <tr className="border-bottom-0">
-                <th></th>
-                <th scope="col">Ano</th>
-                <th scope="col">Trimestre</th>
-                
-              </tr>
-            </thead>
-            <tbody>
-              {dcps.map((dcp) => {
-                return (
-                  <tr key={dcp._id} id={dcp._id} onClick={() => {handleClick(dcp.ano, dcp.trimestre); handleSelectedRow(dcp._id)} } style={{cursor: "pointer"}}>
-                    <td><i className="bi bi-file-earmark-text me-2"></i></td>
-                    <td>{dcp.ano}</td>
-                    <td>{dcp.trimestre}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+          <div>
+            <h4 className='text-center fw-bold fs-6 border border-white bg-white bg-opacity-25 p-2 my-3'>{empresa}</h4>
+
+            <table id="tableResult" className="table text-center table-hover">
+              <thead>
+                <tr className="border-bottom-0">
+                  <th></th>
+                  <th scope="col">Ano</th>
+                  <th scope="col">Trimestre</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dcps.map((dcp) => {
+                  return (
+                    <tr key={dcp._id} id={dcp._id} onClick={() => { handleClick(dcp.ano, dcp.trimestre); handleSelectedRow(dcp._id) }} style={{ cursor: "pointer" }}>
+                      <td><i className="bi bi-file-earmark-text me-2"></i></td>
+                      <td>{dcp.ano}</td>
+                      <td>{dcp.trimestre}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
 
         )}
       </div>
@@ -166,9 +185,11 @@ function Analises() {
         <div className="d-none" id="dcpSection">
           <div className="d-flex justify-content-between">
             <h2 className="py-5 mx-3">Demonstrativo de Crédito Presumido</h2>
-            <h2 className="py-5 mx-3" id="dcpMetaData"></h2>
+            <span className="py-5 mx-3 fs-3" id="dcpMetaData"></span>
           </div>
           <div className="accordion mx-3" id="accordionExample">
+
+            {/* EXPORTAÇÃO DIRETA NO MÊS */}
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingOne">
                 <button
@@ -195,9 +216,9 @@ function Analises() {
                         <th rowSpan="2" style={{ verticalAlign: "middle" }}>
                           Linha
                         </th>
-                        <th colSpan="2">Jan</th>
-                        <th colSpan="2">Fev</th>
-                        <th colSpan="2">Mar</th>
+                        {meses.map((mes, i) => {
+                          return (<th colSpan="2" key={i}>{mes}</th>)
+                        })}
                       </tr>
                       <tr>
                         <th>Declarado</th>
@@ -212,27 +233,36 @@ function Analises() {
                       <tbody className="table-group-divider">
                         <tr>
                           <td>Linha 1</td>
-                          <td>
+                          <td id="declarado1">
                             {dcp1.linha_1.toLocaleString("pt-BR", {
                               style: "currency",
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[0].linha_1}</td>
+                          <td id="calculado1">{gomoExport[0].linha_1.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                           <td>
                             {dcp2.linha_1.toLocaleString("pt-BR", {
                               style: "currency",
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[1].linha_1}</td>
+                          <td>{gomoExport[1].linha_1.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                           <td>
                             {dcp3.linha_1.toLocaleString("pt-BR", {
                               style: "currency",
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[2].linha_1}</td>
+                          <td>{gomoExport[2].linha_1.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                         </tr>
                         <tr>
                           <td>Linha 2</td>
@@ -242,21 +272,30 @@ function Analises() {
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[0].linha_2}</td>
+                          <td>{gomoExport[0].linha_2.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                           <td>
                             {dcp2.linha_2.toLocaleString("pt-BR", {
                               style: "currency",
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[1].linha_2}</td>
+                          <td>{gomoExport[1].linha_2.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                           <td>
                             {dcp3.linha_2.toLocaleString("pt-BR", {
                               style: "currency",
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[2].linha_2}</td>
+                          <td>{gomoExport[2].linha_2.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                         </tr>
                         <tr>
                           <td>Linha 3</td>
@@ -266,21 +305,30 @@ function Analises() {
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[0].linha_3}</td>
+                          <td>{gomoExport[0].linha_3.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                           <td>
                             {dcp2.linha_3.toLocaleString("pt-BR", {
                               style: "currency",
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[1].linha_3}</td>
+                          <td>{gomoExport[1].linha_3.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                           <td>
                             {dcp3.linha_3.toLocaleString("pt-BR", {
                               style: "currency",
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[2].linha_3}</td>
+                          <td>{gomoExport[2].linha_3.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                         </tr>
                         <tr>
                           <td>Linha 4</td>
@@ -290,21 +338,30 @@ function Analises() {
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[0].linha_4}</td>
+                          <td>{gomoExport[0].linha_4.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                           <td>
                             {dcp2.linha_4.toLocaleString("pt-BR", {
                               style: "currency",
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[1].linha_4}</td>
+                          <td>{gomoExport[1].linha_4.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                           <td>
                             {dcp3.linha_4.toLocaleString("pt-BR", {
                               style: "currency",
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[2].linha_4}</td>
+                          <td>{gomoExport[2].linha_4.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                         </tr>
                         <tr>
                           <td>Linha 5</td>
@@ -314,21 +371,30 @@ function Analises() {
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[0].linha_5}</td>
+                          <td>{gomoExport[0].linha_5.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                           <td>
                             {dcp2.linha_5.toLocaleString("pt-BR", {
                               style: "currency",
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[1].linha_5}</td>
+                          <td>{gomoExport[1].linha_5.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                           <td>
                             {dcp3.linha_5.toLocaleString("pt-BR", {
                               style: "currency",
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[2].linha_5}</td>
+                          <td>{gomoExport[2].linha_5.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                         </tr>
                         <tr>
                           <td>Linha 6</td>
@@ -338,21 +404,30 @@ function Analises() {
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[0].linha_6}</td>
+                          <td>{gomoExport[0].linha_6.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                           <td>
                             {dcp2.linha_6.toLocaleString("pt-BR", {
                               style: "currency",
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[1].linha_6}</td>
+                          <td>{gomoExport[1].linha_6.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                           <td>
                             {dcp3.linha_6.toLocaleString("pt-BR", {
                               style: "currency",
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[2].linha_6}</td>
+                          <td>{gomoExport[2].linha_6.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                         </tr>
                         <tr>
                           <td>Linha 7</td>
@@ -362,21 +437,30 @@ function Analises() {
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[0].linha_7}</td>
+                          <td>{gomoExport[0].linha_7.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                           <td>
                             {dcp2.linha_7.toLocaleString("pt-BR", {
                               style: "currency",
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[1].linha_7}</td>
+                          <td>{gomoExport[1].linha_7.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                           <td>
                             {dcp3.linha_7.toLocaleString("pt-BR", {
                               style: "currency",
                               currency: "BRL",
                             })}
                           </td>
-                          <td>{gomoExport[2].linha_7}</td>
+                          <td>{gomoExport[2].linha_7.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}</td>
                         </tr>
                       </tbody>
                     )}
@@ -385,6 +469,7 @@ function Analises() {
               </div>
             </div>
 
+            {/* MATÉRIAS PRIMAS E EMBALAGENS */}
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingTwo">
                 <button
@@ -460,6 +545,7 @@ function Analises() {
               </div>
             </div>
 
+            {/* PRESTAÇÃO DE SERVIÇOS */}
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingThree">
                 <button
@@ -725,6 +811,7 @@ function Analises() {
                 </div>
               </div>
             </div>
+
           </div>
         </div>
 
