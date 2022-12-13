@@ -535,9 +535,9 @@ function Analises() {
         </div>
 
         {/* BOTÕES */}
-        <div class="d-flex justify-content-end">
-          <button class="btn btn-primary mx-3">Salvar análise</button>
-          <button class="btn btn-primary">Gerar relattório</button>
+        <div className="d-flex justify-content-end">
+          <button className="btn btn-primary mx-3">Salvar análise</button>
+          <button className="btn btn-primary">Gerar relattório</button>
         </div>
       </div>
     </div>

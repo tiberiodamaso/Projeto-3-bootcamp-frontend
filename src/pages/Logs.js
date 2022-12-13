@@ -5,14 +5,15 @@ import Pagination from "../components/Pagination";
 
 
 function Logs() {
+  const [reload,setReload] = useState(true)
   const [search, setSearch] = useState("");
   //const [logs, setLogs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  
+     
   const [pagination, setPagination] = useState({
     posts: [],
     currentPage: 1,
-    postsPerPage: 10
+    postsPerPage: 15
   });
 
 
@@ -20,6 +21,10 @@ function Logs() {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+
+
+
+
 
   const paginate = pageNum => setPagination({...pagination, currentPage: pageNum });
   const nextPage = () => setPagination({...pagination, currentPage: currentPage + 1 });
@@ -30,7 +35,15 @@ function Logs() {
       try {
         const response = await api.get("/log/all-logs");
         //setLogs(response.data);
-        setPagination({...pagination, posts: response.data});
+        setPagination({...pagination, posts: response.data.filter((log) => {
+          return (
+            log.user.cpf.toLowerCase().includes(search) ||
+            log.user.first_name.toLowerCase().includes(search) ||
+            log.route.toLowerCase().includes(search) ||
+            log.log.toLowerCase().includes(search) ||
+            log.date.slice(0,10).toLowerCase().includes(search) 
+          );
+        })});
 
         setIsLoading(false);
       } catch (error) {
@@ -38,21 +51,24 @@ function Logs() {
       }
     }
     fetchLogs();
-  }, []);
+  }, [reload]);
 
   function handleSearch(e) {
     setSearch(e.target.value);
+    setPagination({...pagination, currentPage: 1 })
+    setReload(!reload);
+    
   };
 
- 
+   
   return (
          
 
-      <div className="container mt-5">         
+      <div className="container mt-3">         
 
-        <h4>Logs</h4>
-
-        <div className="col-6 justify-content-center mx-auto my-2 py-md-2 text-center">
+        <h4>Logs </h4>
+        
+        <div className="col-6 justify-content-center mx-auto mb-5 py-md-2 text-center">
           <div className="input-group mb-3">
             
             <input
@@ -65,6 +81,7 @@ function Logs() {
             />
             <span className="input-group-text" id="basic-addon1"><i className="bi bi-search"></i></span>
           </div>
+          Foram encontrado <span className="text-primary fw-bold">{posts.length}</span> registros.
         </div>
 
         <table className="table table-striped table-sm">
@@ -75,6 +92,7 @@ function Logs() {
                 <th scope="col">Módulo</th>
                 <th scope="col">Log</th>
                 <th scope="col">Data</th>
+                <th scope="col">Horário</th>
             </tr>
         </thead>
         <tbody>
@@ -83,15 +101,6 @@ function Logs() {
             {!isLoading &&
                     //logs
                     currentPosts
-                    .filter((log) => {
-                        return (
-                          log.user.cpf.toLowerCase().includes(search) ||
-                          log.user.first_name.toLowerCase().includes(search) ||
-                          log.route.toLowerCase().includes(search) ||
-                          log.log.toLowerCase().includes(search) ||
-                          log.date.slice(0,10).toLowerCase().includes(search) 
-                        );
-                      })
                     .map((log)=>{
                         return (
                             <tr key={log._id}>
@@ -100,10 +109,11 @@ function Logs() {
                                 <td>{log.route}</td>
                                 <td>{log.log}</td>
                                 <td>{log.date.slice(0,10)}</td>
+                                <td>{log.date.slice(11,19)}</td>
                                 
                             </tr>
                         )
-                    }).reverse()
+                    })
             }
 
            
