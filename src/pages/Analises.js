@@ -103,6 +103,8 @@ function Analises() {
       table.rows[i].classList.remove("bg-white");
       table.rows[i].classList.remove("bg-opacity-50");
     }
+    selectedRow.classList.add("bg-white");
+    selectedRow.classList.add("bg-opacity-50");  
 
   }
 
@@ -122,6 +124,8 @@ function Analises() {
     let calculado1 = document.querySelector('#calculado1')
     if (declarado1.innerText !== calculado1.innerText) calculado1.classList.add('text-danger')
   }
+
+
 
   return (
 

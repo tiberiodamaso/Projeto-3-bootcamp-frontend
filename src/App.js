@@ -5,11 +5,13 @@ import Signup from './pages/Signup.js'
 import Profile from './pages/Profile.js'
 import Analises from './pages/Analises.js'
 import Logs from './pages/Logs.js'
+import Relatorio from './pages/Relatorio.js'
 import Error from './pages/Error.js'
 import { Toaster } from "react-hot-toast";
 import Navbar from './components/Navbar.js'
 import ProtectedRoute from './components/ProtectedRoute.js'
 import ProtectedRouteAdmin from './components/ProtectedRouteAdmin.js'
+
 
 
 function App() {
@@ -24,6 +26,7 @@ function App() {
         <Route path='/profile' element={<ProtectedRoute Component={Profile} />} />
         <Route path='/analises' element={<ProtectedRoute Component={Analises} />} />
         <Route path='/logs' element={<ProtectedRouteAdmin Component={Logs} />} />
+        <Route path='/relatorio' element={<Relatorio />} />
         <Route path='*' element={<Error />} />
       </Routes>
 
