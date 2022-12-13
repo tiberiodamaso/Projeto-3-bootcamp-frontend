@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 function LinhaDCP({ dcpsTrimestre, gomo, nLinha }) {
+const descricoes = require('../utils/descricaolinhas.json');
   const navigate = useNavigate()
   const clicavel = [4, 5]
   const [dcp1, dcp2, dcp3] = dcpsTrimestre
@@ -24,7 +25,7 @@ function LinhaDCP({ dcpsTrimestre, gomo, nLinha }) {
 
   return (
     <tr>
-      <td>Linha {nLinha}</td>
+      <td data-toggle="tooltip" data-placement="right" title={descricoes[nLinha]} >Linha {nLinha}</td>
       <td>{dcp1[`linha_${nLinha}`].toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
       <td
         onClick={getNotas}
