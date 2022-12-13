@@ -95,7 +95,7 @@ function Analises() {
             <tbody>
               {dcps.map(dcp => {
                 return (
-                  <tr key={dcp._id} onClick={() => handleClick(dcp.ano, dcp.trimestre)}>
+                  <tr key={dcp._id} onClick={() => handleClick(dcp.ano, dcp.trimestre)} style={{cursor: "pointer"}}>
                     <td><i className="bi bi-file-earmark-text me-2"></i>{dcp.ano}</td>
                     <td>{dcp.trimestre}</td>
                   </tr>
@@ -338,9 +338,9 @@ function Analises() {
         </div>
 
         {/* BOTÕES */}
-        <div class="d-flex justify-content-end">
-          <button class="btn btn-primary mx-3">Salvar análise</button>
-          <button class="btn btn-primary">Gerar relattório</button>
+        <div className="d-flex justify-content-end py-5 mx-3">
+          <button className="btn btn-primary mx-3">Salvar análise</button>
+          <button className="btn btn-primary">Gerar relattório</button>
         </div>
 
       </div>
