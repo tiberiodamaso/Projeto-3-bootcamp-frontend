@@ -129,6 +129,7 @@ function receitas(notas, ano, trim) {
 }
 
 function insumos(notas, ano, trim) {
+  console.log("tamo ai nos insumos");
   const cfopInsumos = [
     "1101",
     "1111",
@@ -183,4 +184,5 @@ function insumos(notas, ano, trim) {
   console.log(insumos);
   return insumos;
 }
+
 export { exportacoes, receitas, insumos };
