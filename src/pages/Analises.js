@@ -131,37 +131,32 @@ function Analises() {
               {empresa}
             </h4>
 
-            <table id="tableResult" className="table text-center table-hover">
-              <thead>
-                <tr className="border-bottom-0">
-                  <th></th>
-                  <th scope="col">Ano</th>
-                  <th scope="col">Trimestre</th>
-                </tr>
-              </thead>
-              <tbody>
-                {dcps.map((dcp) => {
-                  return (
-                    <tr
-                      key={dcp._id}
-                      id={dcp._id}
-                      onClick={() => {
-                        handleClick(dcp.ano, dcp.trimestre);
-                        handleSelectedRow(dcp._id);
-                      }}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <td>
-                        <i className="bi bi-file-earmark-text me-2"></i>
-                      </td>
-                      <td>{dcp.ano}</td>
-                      <td>{dcp.trimestre}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+        <div>
+          <h4 className='text-center fw-bold fs-6 border border-white bg-white bg-opacity-25 p-2 my-3'>{empresa}</h4>
+          
+          <table id="tableResult" className="table text-center table-hover">
+            <thead>
+              <tr className="border-bottom-0">
+                <th></th>
+                <th scope="col">Ano</th>
+                <th scope="col">Trimestre</th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              {dcps.map((dcp) => {
+                return (
+                  <tr key={dcp._id} id={dcp._id} onClick={() => {handleClick(dcp.ano, dcp.trimestre); handleSelectedRow(dcp._id)} } style={{cursor: "pointer"}}>
+                    <td><i className="bi bi-file-earmark-text me-2"></i></td>
+                    <td>{dcp.ano}</td>
+                    <td>{dcp.trimestre}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+
         )}
       </div>
 
@@ -739,7 +734,7 @@ function Analises() {
         </div>
 
         {/* BOTÕES */}
-        <div className="d-flex justify-content-end">
+        <div className="d-flex justify-content-end py-5 mx-3">
           <button className="btn btn-primary mx-3">Salvar análise</button>
           <button className="btn btn-primary">Gerar relattório</button>
         </div>
