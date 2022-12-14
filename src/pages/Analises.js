@@ -7,17 +7,18 @@ import {
   combustiveis,
   energia,
   servicos,
+  calculo,
 } from "../utils/montaDCP";
 import { LinhaDCP } from "../components/Linha";
-import { PDFDownloadLink } from '@react-pdf/renderer';
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import RelatorioPDF from "../components/RelatorioPDF";
 import ModalNotas from "../components/ModalNotas";
 import ListaAnalises from "../components/ListaAnalises";
 import { getObservacao, saveObservacao } from "../utils/observacao";
 
 function Analises() {
-  const [info, setInfo] = useState({cnpj: '', ano: 0, mes: 0,nLinha: 0})
-  const [showModal, setShowModal] = useState(true)
+  const [info, setInfo] = useState({ cnpj: "", ano: 0, mes: 0, nLinha: 0 });
+  const [showModal, setShowModal] = useState(true);
   const [dcps, setDCPs] = useState([]);
   const [cnpj, setCnpj] = useState("");
   const [empresa, setEmpresa] = useState("");
@@ -29,6 +30,7 @@ function Analises() {
   const [gomoCombustivel, setGomoCombustivel] = useState([]);
   const [gomoEnergia, setGomoEnergia] = useState([]);
   const [gomoServico, setGomoServicos] = useState([]);
+  const [gomoCalculo, setGomoCalculo] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [observacao, setObservacao] = useState({ texto: "" });
 
@@ -90,7 +92,9 @@ function Analises() {
     if (trimestre === 2) setMeses(["Abr", "Mai", "Jun"]);
     if (trimestre === 3) setMeses(["Jul", "Ago", "Set"]);
     if (trimestre === 4) setMeses(["Out", "Nov", "Dez"]);
-    const cnpjLimpo = cnpjListaAnalises ? cnpjListaAnalises : cnpj.replace(/\D/g, "");
+    const cnpjLimpo = cnpjListaAnalises
+      ? cnpjListaAnalises
+      : cnpj.replace(/\D/g, "");
 
     // Recupera DCPs do trimestre
     const response = await api.get(
@@ -109,13 +113,30 @@ function Analises() {
     setGomoReceita(
       receitas(resposta.data, respostaAnalise.data, ano, trimestre)
     );
-    setGomoInsumo(insumos(resposta.data, respostaAnalise.data, ano, trimestre));
+    setGomoInsumo(
+      insumos(
+        response.data,
+        resposta.data,
+        respostaAnalise.data,
+        ano,
+        trimestre
+      )
+    );
     setGomoExport(
       exportacoes(resposta.data, respostaAnalise.data, ano, trimestre)
     );
-    setGomoCombustivel(combustiveis(trimestre));
-    setGomoEnergia(energia(trimestre));
-    setGomoServicos(servicos(trimestre));
+    setGomoCombustivel(combustiveis(response.data, trimestre));
+    setGomoEnergia(energia(response.data, trimestre));
+    setGomoServicos(servicos(response.data, trimestre));
+    setGomoCalculo(
+      calculo(
+        response.data,
+        resposta.data,
+        respostaAnalise.data,
+        ano,
+        trimestre
+      )
+    );
 
     getObservacao(cnpjLimpo, ano, trimestre, setObservacao);
 
@@ -133,10 +154,9 @@ function Analises() {
     }
     selectedRow.classList.add("bg-white");
     selectedRow.classList.add("bg-opacity-50");
-
   }
 
-  // Campo observações da análise 
+  // Campo observações da análise
   function handleObservacao(e) {
     setObservacao({ ...observacao, [e.target.name]: e.target.value });
   }
@@ -1068,8 +1088,8 @@ function Analises() {
                       <tbody className="table-group-divider">
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={49}
+                          gomo={gomoCalculo}
+                          nLinha={55}
                           showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
@@ -1077,8 +1097,8 @@ function Analises() {
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={50}
+                          gomo={gomoCalculo}
+                          nLinha={56}
                           showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
@@ -1086,35 +1106,8 @@ function Analises() {
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={51}
-                          showModal={showModal}
-                          setShowModal={setShowModal}
-                          info={info}
-                          setInfo={setInfo}
-                        />
-                        <LinhaDCP
-                          dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={52}
-                          showModal={showModal}
-                          setShowModal={setShowModal}
-                          info={info}
-                          setInfo={setInfo}
-                        />
-                        <LinhaDCP
-                          dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={53}
-                          showModal={showModal}
-                          setShowModal={setShowModal}
-                          info={info}
-                          setInfo={setInfo}
-                        />
-                        <LinhaDCP
-                          dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={54}
+                          gomo={gomoCalculo}
+                          nLinha={57}
                           showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
@@ -1138,7 +1131,9 @@ function Analises() {
                   aria-expanded="false"
                   aria-controls="collapseEight"
                 >
-                  <span className="col-8">Valores utilizados do crédito presumido</span>
+                  <span className="col-8">
+                    Valores utilizados do crédito presumido
+                  </span>
                 </button>
               </h2>
               <div
@@ -1175,8 +1170,8 @@ function Analises() {
                       <tbody className="table-group-divider">
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={49}
+                          gomo={gomoCalculo}
+                          nLinha={58}
                           showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
@@ -1184,8 +1179,8 @@ function Analises() {
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={50}
+                          gomo={gomoCalculo}
+                          nLinha={59}
                           showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
@@ -1193,8 +1188,8 @@ function Analises() {
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={51}
+                          gomo={gomoCalculo}
+                          nLinha={60}
                           showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
@@ -1202,8 +1197,8 @@ function Analises() {
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={52}
+                          gomo={gomoCalculo}
+                          nLinha={61}
                           showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
@@ -1211,8 +1206,8 @@ function Analises() {
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={53}
+                          gomo={gomoCalculo}
+                          nLinha={62}
                           showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
@@ -1220,8 +1215,98 @@ function Analises() {
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={54}
+                          gomo={gomoCalculo}
+                          nLinha={63}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={64}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={65}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={66}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={67}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={68}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={69}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={70}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={71}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={72}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={73}
                           showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
@@ -1238,52 +1323,78 @@ function Analises() {
 
         {/* OBSERVAÇÕES */}
         <div id="acoesId" className="d-none mx-3 py-3">
-
           <div className="py-3">
-            <textarea value={observacao.texto} className="form-control" id="exampleFormControlTextarea1" rows="4" name="texto" placeholder="Escreva as observações da análise" onChange={handleObservacao}></textarea>
+            <textarea
+              value={observacao.texto}
+              className="form-control"
+              id="exampleFormControlTextarea1"
+              rows="4"
+              name="texto"
+              placeholder="Escreva as observações da análise"
+              onChange={handleObservacao}
+            ></textarea>
           </div>
-
 
           {/* BOTÕES */}
           <div className="d-flex justify-content-end py-3">
-            <button onClick={() => {
-              saveObservacao(observacao);
-            }} className="btn btn-primary mx-3">Salvar análise</button>
+            <button
+              onClick={() => {
+                saveObservacao(observacao);
+              }}
+              className="btn btn-primary mx-3"
+            >
+              Salvar análise
+            </button>
 
-        {!isLoading && (
-          <PDFDownloadLink document={<RelatorioPDF 
-                empresa={empresa} 
-                trimestre={meses} 
-                dcpsTrimestre={dcpsTrimestre} 
-                gomoExport={gomoExport}
-                gomoReceita={gomoReceita}
-                gomoInsumo={gomoInsumo}
-                gomoCombustivel={gomoCombustivel}
-                gomoEnergia={gomoEnergia}
-                gomoServico={gomoServico}
-                observacao={observacao.texto} />} fileName="relatorio">
-          {({loading}) => (loading ? <button className="btn btn-outline-primary">Carregando...</button>:<button className="btn btn-primary">Gerar relatório</button>)} 
-        </PDFDownloadLink>
-        )} 
-        
-
-
+            {!isLoading && (
+              <PDFDownloadLink
+                document={
+                  <RelatorioPDF
+                    empresa={empresa}
+                    trimestre={meses}
+                    dcpsTrimestre={dcpsTrimestre}
+                    gomoExport={gomoExport}
+                    gomoReceita={gomoReceita}
+                    gomoInsumo={gomoInsumo}
+                    gomoCombustivel={gomoCombustivel}
+                    gomoEnergia={gomoEnergia}
+                    gomoServico={gomoServico}
+                    observacao={observacao.texto}
+                  />
+                }
+                fileName="relatorio"
+              >
+                {({ loading }) =>
+                  loading ? (
+                    <button className="btn btn-outline-primary">
+                      Carregando...
+                    </button>
+                  ) : (
+                    <button className="btn btn-primary">Gerar relatório</button>
+                  )
+                }
+              </PDFDownloadLink>
+            )}
           </div>
-
-
         </div>
 
         {/* ANALISES */}
         <div className="">
           <h2 className="py-5 mx-3">Análises</h2>
-          <ListaAnalises gomoExport={gomoExport} parentHandleClick={handleClick} setCnpj={setCnpj} />
+          <ListaAnalises
+            gomoExport={gomoExport}
+            parentHandleClick={handleClick}
+            setCnpj={setCnpj}
+          />
         </div>
-
       </div>
 
       {/* MODAL */}
-      <ModalNotas showModal={showModal} setShowModal={setShowModal} info={info}/>
-      
+      <ModalNotas
+        showModal={showModal}
+        setShowModal={setShowModal}
+        info={info}
+      />
     </div>
   );
 }
