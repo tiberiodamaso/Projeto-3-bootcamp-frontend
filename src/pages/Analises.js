@@ -15,8 +15,8 @@ function Analises() {
   const [cnpj, setCnpj] = useState("");
   const [empresa, setEmpresa] = useState("");
   const [dcpsTrimestre, setDcpsTrimestre] = useState([]);
-  const [gomoExport, setGomoExport] = useState([]);
   const [meses, setMeses] = useState([]);
+  const [gomoExport, setGomoExport] = useState([]);
   const [gomoReceita, setGomoReceita] = useState([]);
   const [gomoInsumo, setGomoInsumo] = useState([]);
   const [gomoCombustivel, setGomoCombustivel] = useState([]);
@@ -111,7 +111,7 @@ function Analises() {
     setIsLoading(false);
   }
 
-  // Estiliza a tabela quando clica em uma DCP
+  // Estiliza a tabela de DCPs do banco quando clica em uma DCP
   function handleSelectedRow(id) {
     const table = document.getElementById("tableResult");
     const rows = table.getElementsByTagName("tr");

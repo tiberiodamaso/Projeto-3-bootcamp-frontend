@@ -1,12 +1,20 @@
 import { useNavigate } from "react-router-dom";
 
 function LinhaDCP({ dcpsTrimestre, gomo, nLinha }) {
-  const descricoes = require("../utils/descricaolinhas.json");
-
+  
+  const descricoes = require('../utils/descricaolinhas.json');
   const navigate = useNavigate();
-  const clicavel = [4, 5];
+  const clicavel = [4, 5, 9]; // Linhas da DCP que são clicáveis
   const [dcp1, dcp2, dcp3] = dcpsTrimestre;
+  // const linhas = Array.from(document.querySelectorAll('.linha'))
+  // const linha4 = linhas.filter(linha => linha.parentElement.dataset.linha === '4')
+  // const tr = linhas.filter(linha => linha.parentNode.dataset.linha === 4)
+  // console.log(tr)
+  // const trLinha = teste.previousSibling
+  // console.log(trLinha.dataset.linha)
 
+
+  // Recupera as notas fiscais referentes ao ano e mês do cnpj pesquisado
   function getNotas(e) {
     // console.log(e)
     const cnpj = dcp1.cnpj;
@@ -24,21 +32,26 @@ function LinhaDCP({ dcpsTrimestre, gomo, nLinha }) {
     }
   }
 
+  // Coloca o cursor como pointer
+  function cursorPointer(e){
+    // console.log(e)
+    if (clicavel.includes(parseInt(e.target.parentElement.dataset.linha))) {
+      e.target.style.cursor = "pointer"
+      e.target.classList.toggle("text-bg-info")
+    }
+  }
+
+  // Remove Background
+  function removeBg(e){
+    if (clicavel.includes(parseInt(e.target.parentElement.dataset.linha))) {
+      e.target.classList.toggle("text-bg-info")
+    }
+  }
+
   return (
-    <tr>
-      <td
-        data-toggle="tooltip"
-        data-placement="right"
-        title={descricoes[nLinha]}
-      >
-        Linha {nLinha}
-      </td>
-      <td>
-        {dcp1[`linha_${nLinha}`].toLocaleString("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        })}
-      </td>
+    <tr id={`teste${nLinha}`} data-linha={nLinha}>
+      <td data-toggle="tooltip" data-placement="right" title={descricoes[nLinha]}>Linha {nLinha}</td>
+      <td>{dcp1[`linha_${nLinha}`].toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
       <td
         onClick={getNotas}
         className={`${
@@ -48,6 +61,8 @@ function LinhaDCP({ dcpsTrimestre, gomo, nLinha }) {
             : ""
         }`}
         data-mes={dcp1.mes}
+        onMouseOver={cursorPointer}
+        onMouseOut={removeBg}
       >
         {gomo[0][`linha_${nLinha}`].toLocaleString("pt-BR", {
           style: "currency",
@@ -69,6 +84,8 @@ function LinhaDCP({ dcpsTrimestre, gomo, nLinha }) {
             : ""
         }`}
         data-mes={dcp2.mes}
+        onMouseOver={cursorPointer}
+        onMouseOut={removeBg}
       >
         {gomo[1][`linha_${nLinha}`].toLocaleString("pt-BR", {
           style: "currency",
@@ -90,6 +107,8 @@ function LinhaDCP({ dcpsTrimestre, gomo, nLinha }) {
             : ""
         }`}
         data-mes={dcp3.mes}
+        onMouseOver={cursorPointer}
+        onMouseOut={removeBg}
       >
         {gomo[2][`linha_${nLinha}`].toLocaleString("pt-BR", {
           style: "currency",
