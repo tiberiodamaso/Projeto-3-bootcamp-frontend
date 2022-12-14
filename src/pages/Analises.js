@@ -980,7 +980,11 @@ function Analises() {
                 trimestre={meses} 
                 dcpsTrimestre={dcpsTrimestre} 
                 gomoExport={gomoExport}
-                gomoReceita={gomoReceita} 
+                gomoReceita={gomoReceita}
+                gomoInsumo={gomoInsumo}
+                gomoCombustivel={gomoCombustivel}
+                gomoEnergia={gomoEnergia}
+                gomoServico={gomoServico}
                 observacao={observacao.texto} />} fileName="relatorio">
           {({loading}) => (loading ? <button className="btn btn-outline-primary">Carregando...</button>:<button className="btn btn-primary">Gerar relatório</button>)} 
         </PDFDownloadLink>
