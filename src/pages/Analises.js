@@ -128,23 +128,6 @@ function Analises() {
 
   }
 
-    // Checa se os valores declarados e calculados são divergentes
-  function checkValues() {
-    let declarado1 = document.querySelector('#declarado1')
-    let calculado1 = document.querySelector('#calculado1')
-    if (declarado1.innerText !== calculado1.innerText) calculado1.classList.add('text-danger')
-  }
-
-  // Checa se os valores declarados e calculados são divergentes
-  function test(e) {
-    const event = e
-    console.log(e)
-    let declarado1 = document.querySelector('#declarado1')
-    let calculado1 = document.querySelector('#calculado1')
-    if (declarado1.innerText !== calculado1.innerText) calculado1.classList.add('text-danger')
-
-  }
-
   // Campo observações da análise 
   function handleObservacao(e){
     setObservacao({...observacao, [e.target.name]: e.target.value});
@@ -746,6 +729,172 @@ function Analises() {
                 id="collapseSix"
                 className="accordion-collapse collapse"
                 aria-labelledby="headingSix"
+                data-bs-parent="#accordionExample"
+              >
+                <div className="accordion-body">
+                  <table className="table table-hover text-center">
+                    <thead>
+                      <tr>
+                        <th rowSpan="2" style={{ verticalAlign: "middle" }}>
+                          Linha
+                        </th>
+                        {meses.map((mes, i) => {
+                          return (
+                            <th colSpan="2" key={i}>
+                              {mes}
+                            </th>
+                          );
+                        })}
+                      </tr>
+                      <tr>
+                        <th>Declarado</th>
+                        <th>Calculado</th>
+                        <th>Declarado</th>
+                        <th>Calculado</th>
+                        <th>Declarado</th>
+                        <th>Calculado</th>
+                      </tr>
+                    </thead>
+                    {!isLoading && (
+                      <tbody className="table-group-divider">
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={49}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={50}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={51}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={52}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={53}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={54}
+                        />
+                      </tbody>
+                    )}
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            {/* CÁLCULO DO CRÉDITO PRESUMIDO  */}
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingSeven">
+                <button
+                  className="accordion-button fs-4 collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseSeven"
+                  aria-expanded="false"
+                  aria-controls="collapseSeven"
+                >
+                  <span className="col-8">Cálculo do crédito presumido</span>
+                </button>
+              </h2>
+              <div
+                id="collapseSeven"
+                className="accordion-collapse collapse"
+                aria-labelledby="headingSeven"
+                data-bs-parent="#accordionExample"
+              >
+                <div className="accordion-body">
+                  <table className="table table-hover text-center">
+                    <thead>
+                      <tr>
+                        <th rowSpan="2" style={{ verticalAlign: "middle" }}>
+                          Linha
+                        </th>
+                        {meses.map((mes, i) => {
+                          return (
+                            <th colSpan="2" key={i}>
+                              {mes}
+                            </th>
+                          );
+                        })}
+                      </tr>
+                      <tr>
+                        <th>Declarado</th>
+                        <th>Calculado</th>
+                        <th>Declarado</th>
+                        <th>Calculado</th>
+                        <th>Declarado</th>
+                        <th>Calculado</th>
+                      </tr>
+                    </thead>
+                    {!isLoading && (
+                      <tbody className="table-group-divider">
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={49}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={50}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={51}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={52}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={53}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={54}
+                        />
+                      </tbody>
+                    )}
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            {/* VALORES UTILIZADOS DO CRÉDITO PRESUMIDO  */}
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingEight">
+                <button
+                  className="accordion-button fs-4 collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseEight"
+                  aria-expanded="false"
+                  aria-controls="collapseEight"
+                >
+                  <span className="col-8">Valores utilizados do crédito presumido</span>
+                </button>
+              </h2>
+              <div
+                id="collapseEight"
+                className="accordion-collapse collapse"
+                aria-labelledby="headingEight"
                 data-bs-parent="#accordionExample"
               >
                 <div className="accordion-body">
