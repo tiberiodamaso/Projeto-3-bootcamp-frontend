@@ -9,6 +9,8 @@ import {
   servicos,
 } from "../utils/montaDCP";
 import { LinhaDCP } from "../components/Linha";
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import RelatorioPDF from "../components/RelatorioPDF";
 
 function Analises() {
   const [dcps, setDCPs] = useState([]);
@@ -23,6 +25,7 @@ function Analises() {
   const [gomoEnergia, setGomoEnergia] = useState([]);
   const [gomoServico, setGomoServicos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [observacao, setObservacao] = useState({texto: ""});
 
   // Coloca a máscara no CNPJ
   function handleChange(e) {
@@ -121,7 +124,30 @@ function Analises() {
       table.rows[i].classList.remove("bg-opacity-50");
     }
     selectedRow.classList.add("bg-white");
-    selectedRow.classList.add("bg-opacity-50");
+    selectedRow.classList.add("bg-opacity-50");  
+
+  }
+
+    // Checa se os valores declarados e calculados são divergentes
+  function checkValues() {
+    let declarado1 = document.querySelector('#declarado1')
+    let calculado1 = document.querySelector('#calculado1')
+    if (declarado1.innerText !== calculado1.innerText) calculado1.classList.add('text-danger')
+  }
+
+  // Checa se os valores declarados e calculados são divergentes
+  function test(e) {
+    const event = e
+    console.log(e)
+    let declarado1 = document.querySelector('#declarado1')
+    let calculado1 = document.querySelector('#calculado1')
+    if (declarado1.innerText !== calculado1.innerText) calculado1.classList.add('text-danger')
+
+  }
+
+  // Campo observações da análise 
+  function handleObservacao(e){
+    setObservacao({...observacao, [e.target.name]: e.target.value});
   }
 
   return (
@@ -789,20 +815,26 @@ function Analises() {
 
         {/* OBSERVAÇÕES */}
         <div id="acoesId" className="d-none mx-3 py-3">
-          <div className="py-3">
-            <textarea
-              className="form-control"
-              id="exampleFormControlTextarea1"
-              rows="4"
-              placeholder="Escreva as observações da análise"
-            ></textarea>
-          </div>
 
-          {/* BOTÕES */}
-          <div className="d-flex justify-content-end py-3">
-            <button className="btn btn-primary mx-3">Salvar análise</button>
-            <button className="btn btn-primary">Gerar relatório</button>
-          </div>
+        <div className="py-3">
+          <textarea className="form-control" id="exampleFormControlTextarea1" rows="4" name="texto" placeholder="Escreva as observações da análise" onChange={handleObservacao}></textarea>
+        </div>
+
+
+        {/* BOTÕES */}
+        <div className="d-flex justify-content-end py-3">
+         {/* <button className="btn btn-primary mx-3">Salvar análise</button> */}
+
+        {!isLoading && (
+          <PDFDownloadLink document={<RelatorioPDF empresa={empresa} trimestre={meses} dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} observacao={observacao.texto} />} fileName="relatorio">
+          {({loading}) => (loading ? <button className="btn btn-outline-primary">Carregando...</button>:<button className="btn btn-primary">Gerar relatório</button>)} 
+        </PDFDownloadLink>
+        )} 
+        
+
+        </div>
+
+
         </div>
 
         {/* ANALISES */}
