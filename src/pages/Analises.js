@@ -11,9 +11,12 @@ import {
 import { LinhaDCP } from "../components/Linha";
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import RelatorioPDF from "../components/RelatorioPDF";
+import ModalNotas from "../components/ModalNotas";
 import ListaAnalises from "../components/ListaAnalises";
 
 function Analises() {
+  const [info, setInfo] = useState({cnpj: '', ano: 0, mes: 0,nLinha: 0})
+  const [showModal, setShowModal] = useState(true)
   const [dcps, setDCPs] = useState([]);
   const [cnpj, setCnpj] = useState("");
   const [empresa, setEmpresa] = useState("");
@@ -26,7 +29,7 @@ function Analises() {
   const [gomoEnergia, setGomoEnergia] = useState([]);
   const [gomoServico, setGomoServicos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [observacao, setObservacao] = useState({texto: ""});
+  const [observacao, setObservacao] = useState({ texto: "" });
 
   // Coloca a máscara no CNPJ
   function handleChange(e) {
@@ -125,15 +128,17 @@ function Analises() {
       table.rows[i].classList.remove("bg-opacity-50");
     }
     selectedRow.classList.add("bg-white");
-    selectedRow.classList.add("bg-opacity-50");  
+    selectedRow.classList.add("bg-opacity-50");
 
   }
 
   // Campo observações da análise 
-  function handleObservacao(e){
-    setObservacao({...observacao, [e.target.name]: e.target.value});
+  function handleObservacao(e) {
+    setObservacao({ ...observacao, [e.target.name]: e.target.value });
   }
 
+  // console.log(info)
+  // console.log(showModal)
   return (
     <div className="d-flex">
       {/* SIDEBAR */}
@@ -257,36 +262,64 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoExport}
                           nLinha={1}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoExport}
                           nLinha={2}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoExport}
                           nLinha={3}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoExport}
                           nLinha={4}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoExport}
                           nLinha={5}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoExport}
                           nLinha={6}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoExport}
                           nLinha={7}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                       </tbody>
                     )}
@@ -345,16 +378,28 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoReceita}
                           nLinha={8}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoReceita}
                           nLinha={9}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoReceita}
                           nLinha={10}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                       </tbody>
                     )}
@@ -413,81 +458,145 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoInsumo}
                           nLinha={11}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoInsumo}
                           nLinha={12}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoInsumo}
                           nLinha={13}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoInsumo}
                           nLinha={14}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoInsumo}
                           nLinha={15}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoInsumo}
                           nLinha={16}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoInsumo}
                           nLinha={17}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoInsumo}
                           nLinha={18}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoInsumo}
                           nLinha={19}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoInsumo}
                           nLinha={20}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoInsumo}
                           nLinha={21}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoInsumo}
                           nLinha={22}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoInsumo}
                           nLinha={23}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoInsumo}
                           nLinha={24}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoInsumo}
                           nLinha={25}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoInsumo}
                           nLinha={26}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                       </tbody>
                     )}
@@ -546,81 +655,145 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCombustivel}
                           nLinha={27}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCombustivel}
                           nLinha={28}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCombustivel}
                           nLinha={29}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCombustivel}
                           nLinha={30}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCombustivel}
                           nLinha={31}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCombustivel}
                           nLinha={32}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCombustivel}
                           nLinha={33}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCombustivel}
                           nLinha={34}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCombustivel}
                           nLinha={35}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCombustivel}
                           nLinha={36}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCombustivel}
                           nLinha={37}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCombustivel}
                           nLinha={38}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCombustivel}
                           nLinha={39}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCombustivel}
                           nLinha={40}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCombustivel}
                           nLinha={41}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCombustivel}
                           nLinha={42}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                       </tbody>
                     )}
@@ -679,31 +852,55 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoEnergia}
                           nLinha={43}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoEnergia}
                           nLinha={44}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoEnergia}
                           nLinha={45}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoEnergia}
                           nLinha={46}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoEnergia}
                           nLinha={47}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoEnergia}
                           nLinha={48}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                       </tbody>
                     )}
@@ -762,31 +959,55 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={49}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={50}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={51}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={52}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={53}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={54}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                       </tbody>
                     )}
@@ -845,31 +1066,55 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={49}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={50}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={51}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={52}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={53}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={54}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                       </tbody>
                     )}
@@ -928,31 +1173,55 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={49}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={50}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={51}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={52}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={53}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoServico}
                           nLinha={54}
+                          showModal={showModal}
+                          setShowModal={setShowModal}
+                          info={info}
+                          setInfo={setInfo}
                         />
                       </tbody>
                     )}
@@ -966,14 +1235,14 @@ function Analises() {
         {/* OBSERVAÇÕES */}
         <div id="acoesId" className="d-none mx-3 py-3">
 
-        <div className="py-3">
-          <textarea className="form-control" id="exampleFormControlTextarea1" rows="4" name="texto" placeholder="Escreva as observações da análise" onChange={handleObservacao}></textarea>
-        </div>
+          <div className="py-3">
+            <textarea className="form-control" id="exampleFormControlTextarea1" rows="4" name="texto" placeholder="Escreva as observações da análise" onChange={handleObservacao}></textarea>
+          </div>
 
 
-        {/* BOTÕES */}
-        <div className="d-flex justify-content-end py-3">
-         {/* <button className="btn btn-primary mx-3">Salvar análise</button> */}
+          {/* BOTÕES */}
+          <div className="d-flex justify-content-end py-3">
+            {/* <button className="btn btn-primary mx-3">Salvar análise</button> */}
 
         {!isLoading && (
           <PDFDownloadLink document={<RelatorioPDF 
@@ -992,7 +1261,8 @@ function Analises() {
         )} 
         
 
-        </div>
+
+          </div>
 
 
         </div>
@@ -1002,7 +1272,12 @@ function Analises() {
           <h2 className="py-5 mx-3">Análises</h2>
           <ListaAnalises gomoExport={gomoExport} parentHandleClick={handleClick} />
         </div>
+
       </div>
+
+      {/* MODAL */}
+      <ModalNotas showModal={showModal} setShowModal={setShowModal} info={info}/>
+      
     </div>
   );
 }
