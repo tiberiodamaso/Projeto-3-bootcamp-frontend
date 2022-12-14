@@ -826,7 +826,13 @@ function Analises() {
          {/* <button className="btn btn-primary mx-3">Salvar análise</button> */}
 
         {!isLoading && (
-          <PDFDownloadLink document={<RelatorioPDF empresa={empresa} trimestre={meses} dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} observacao={observacao.texto} />} fileName="relatorio">
+          <PDFDownloadLink document={<RelatorioPDF 
+                empresa={empresa} 
+                trimestre={meses} 
+                dcpsTrimestre={dcpsTrimestre} 
+                gomoExport={gomoExport}
+                gomoReceita={gomoReceita} 
+                observacao={observacao.texto} />} fileName="relatorio">
           {({loading}) => (loading ? <button className="btn btn-outline-primary">Carregando...</button>:<button className="btn btn-primary">Gerar relatório</button>)} 
         </PDFDownloadLink>
         )} 

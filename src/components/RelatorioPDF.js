@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
 
 
 
-function RelatorioPDF({ empresa, trimestre, dcpsTrimestre, gomo, observacao }) {  
+function RelatorioPDF({ empresa, trimestre, dcpsTrimestre, gomoExport, gomoReceita, observacao }) {  
         
 
     const [dcp1, dcp2, dcp3] = dcpsTrimestre
@@ -292,14 +292,35 @@ function RelatorioPDF({ empresa, trimestre, dcpsTrimestre, gomo, observacao }) {
             {createTableTrimestre()}
             {createTableHeader()}
             
-            {createTableRow(1, dcp1['linha_1'], gomo[0]['linha_1'], dcp2['linha_1'], gomo[1]['linha_1'], dcp3['linha_1'], gomo[2]['linha_1'])}
-            {createTableRow(2, dcp1['linha_2'], gomo[0]['linha_2'], dcp2['linha_2'], gomo[1]['linha_2'], dcp3['linha_2'], gomo[2]['linha_2'])}
-            {createTableRow(3, dcp1['linha_3'], gomo[0]['linha_3'], dcp2['linha_3'], gomo[1]['linha_3'], dcp3['linha_3'], gomo[2]['linha_3'])}
-            {createTableRow(4, dcp1['linha_4'], gomo[0]['linha_4'], dcp2['linha_4'], gomo[1]['linha_4'], dcp3['linha_4'], gomo[2]['linha_4'])}
-            {createTableRow(5, dcp1['linha_5'], gomo[0]['linha_5'], dcp2['linha_5'], gomo[1]['linha_5'], dcp3['linha_5'], gomo[2]['linha_5'])}
-            {createTableRow(6, dcp1['linha_6'], gomo[0]['linha_6'], dcp2['linha_6'], gomo[1]['linha_6'], dcp3['linha_6'], gomo[2]['linha_6'])}
-            {createTableRow(7, dcp1['linha_7'], gomo[0]['linha_7'], dcp2['linha_7'], gomo[1]['linha_7'], dcp3['linha_7'], gomo[2]['linha_7'])}
+            {createTableRow(1, dcp1['linha_1'], gomoExport[0]['linha_1'], dcp2['linha_1'], gomoExport[1]['linha_1'], dcp3['linha_1'], gomoExport[2]['linha_1'])}
+            {createTableRow(2, dcp1['linha_2'], gomoExport[0]['linha_2'], dcp2['linha_2'], gomoExport[1]['linha_2'], dcp3['linha_2'], gomoExport[2]['linha_2'])}
+            {createTableRow(3, dcp1['linha_3'], gomoExport[0]['linha_3'], dcp2['linha_3'], gomoExport[1]['linha_3'], dcp3['linha_3'], gomoExport[2]['linha_3'])}
+            {createTableRow(4, dcp1['linha_4'], gomoExport[0]['linha_4'], dcp2['linha_4'], gomoExport[1]['linha_4'], dcp3['linha_4'], gomoExport[2]['linha_4'])}
+            {createTableRow(5, dcp1['linha_5'], gomoExport[0]['linha_5'], dcp2['linha_5'], gomoExport[1]['linha_5'], dcp3['linha_5'], gomoExport[2]['linha_5'])}
+            {createTableRow(6, dcp1['linha_6'], gomoExport[0]['linha_6'], dcp2['linha_6'], gomoExport[1]['linha_6'], dcp3['linha_6'], gomoExport[2]['linha_6'])}
+            {createTableRow(7, dcp1['linha_7'], gomoExport[0]['linha_7'], dcp2['linha_7'], gomoExport[1]['linha_7'], dcp3['linha_7'], gomoExport[2]['linha_7'])}
             </View>
+
+
+
+            {/* ------- Receita Operacional Bruta-------- */}
+            <Text style={styles.subtitle}>
+            Receita Operacional Bruta            
+            </Text>
+
+            <View style={styles.divider}></View>
+            
+            
+            <View style={styles.tableStyle}>
+            {createTableTrimestre()}
+            {createTableHeader()}
+            
+            {createTableRow(8, dcp1['linha_8'], gomoReceita[0]['linha_8'], dcp2['linha_8'], gomoReceita[1]['linha_8'], dcp3['linha_8'], gomoReceita[2]['linha_8'])}
+            {createTableRow(9, dcp1['linha_9'], gomoReceita[0]['linha_9'], dcp2['linha_9'], gomoReceita[1]['linha_9'], dcp3['linha_9'], gomoReceita[2]['linha_9'])}
+            {createTableRow(10, dcp1['linha_10'], gomoReceita[0]['linha_10'], dcp2['linha_10'], gomoReceita[1]['linha_10'], dcp3['linha_10'], gomoReceita[2]['linha_10'])}
+            </View>
+
+
 
             <View style={styles.divider}></View>   
 
