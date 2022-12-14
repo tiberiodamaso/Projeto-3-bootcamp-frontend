@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import api from "../api/api";
-import { exportacoes, receitas, insumos } from "../utils/montaDCP";
+import {
+  exportacoes,
+  receitas,
+  insumos,
+  combustiveis,
+  energia,
+  servicos,
+} from "../utils/montaDCP";
 import { LinhaDCP } from "../components/Linha";
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import RelatorioPDF from "../components/RelatorioPDF";
@@ -9,11 +16,14 @@ function Analises() {
   const [dcps, setDCPs] = useState([]);
   const [cnpj, setCnpj] = useState("");
   const [empresa, setEmpresa] = useState("");
-  const [dcpsTrimestre, setDcpsTrimestre] = useState([])
-  const [gomoExport, setGomoExport] = useState([]);
+  const [dcpsTrimestre, setDcpsTrimestre] = useState([]);
   const [meses, setMeses] = useState([]);
+  const [gomoExport, setGomoExport] = useState([]);
   const [gomoReceita, setGomoReceita] = useState([]);
   const [gomoInsumo, setGomoInsumo] = useState([]);
+  const [gomoCombustivel, setGomoCombustivel] = useState([]);
+  const [gomoEnergia, setGomoEnergia] = useState([]);
+  const [gomoServico, setGomoServicos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [observacao, setObservacao] = useState({texto: ""});
 
@@ -71,35 +81,44 @@ function Analises() {
     dcpSection.classList.remove("d-none");
     dcpMetaData.innerText = `${trimestre}/${ano}`;
     acoesId.classList.remove("d-none");
-    if (trimestre === 1) setMeses(['Jan', 'Fev', 'Mar'])
-    if (trimestre === 2) setMeses(['Abr', 'Mai', 'Jun'])
-    if (trimestre === 3) setMeses(['Jul', 'Ago', 'Set'])
-    if (trimestre === 4) setMeses(['Out', 'Nov', 'Dez'])
+    if (trimestre === 1) setMeses(["Jan", "Fev", "Mar"]);
+    if (trimestre === 2) setMeses(["Abr", "Mai", "Jun"]);
+    if (trimestre === 3) setMeses(["Jul", "Ago", "Set"]);
+    if (trimestre === 4) setMeses(["Out", "Nov", "Dez"]);
     const cnpjLimpo = cnpj.replace(/\D/g, "");
 
     // Recupera DCPs do trimestre
     const response = await api.get(
       `/dcp/all-dcp?cnpj=${cnpjLimpo}&ano=${ano}&trimestre=${trimestre}`
     );
-    setDcpsTrimestre(response.data)
+    setDcpsTrimestre(response.data);
 
     // Recupera nfes do trimestre
     const resposta = await api.get("/nfe/all-nfe", {
       params: { cnpj: cnpjLimpo, trim: trimestre, ano: ano },
     });
-    setGomoReceita(receitas(resposta.data, ano, trimestre));
-    setGomoInsumo(insumos(resposta.data, ano, trimestre));
-    setGomoExport(exportacoes(resposta.data, ano, trimestre));
+    const respostaAnalise = await api.get("/analise/acumulado", {
+      params: { cnpj: cnpjLimpo, trimestre: trimestre, ano: ano },
+    });
 
+    setGomoReceita(
+      receitas(resposta.data, respostaAnalise.data, ano, trimestre)
+    );
+    setGomoInsumo(insumos(resposta.data, respostaAnalise.data, ano, trimestre));
+    setGomoExport(
+      exportacoes(resposta.data, respostaAnalise.data, ano, trimestre)
+    );
+    setGomoCombustivel(combustiveis(trimestre));
+    setGomoEnergia(energia(trimestre));
+    setGomoServicos(servicos(trimestre));
     setIsLoading(false);
   }
 
-  // Estiliza a tabela quando clica em uma DCP
+  // Estiliza a tabela de DCPs do banco quando clica em uma DCP
   function handleSelectedRow(id) {
-
     const table = document.getElementById("tableResult");
     const rows = table.getElementsByTagName("tr");
-    const selectedRow = document.getElementById(id)
+    const selectedRow = document.getElementById(id);
     for (let i = 0; i < rows.length; i++) {
       table.rows[i].classList.remove("bg-white");
       table.rows[i].classList.remove("bg-opacity-50");
@@ -123,6 +142,7 @@ function Analises() {
     let declarado1 = document.querySelector('#declarado1')
     let calculado1 = document.querySelector('#calculado1')
     if (declarado1.innerText !== calculado1.innerText) calculado1.classList.add('text-danger')
+
   }
 
   // Campo observações da análise 
@@ -131,13 +151,13 @@ function Analises() {
   }
 
   return (
-
-    <div className='d-flex'>
-
+    <div className="d-flex">
       {/* SIDEBAR */}
-      <div className="d-flex flex-column flex-shrink-0 px-3 vh-100 bg-dark bg-opacity-10" style={{ width: 305 }}>
-
-        <form className='mt-5' onSubmit={handleSubmit}>
+      <div
+        className="d-flex flex-column flex-shrink-0 px-3 vh-100 bg-dark bg-opacity-10"
+        style={{ width: 305 }}
+      >
+        <form className="mt-5" onSubmit={handleSubmit}>
           <div className="input-group mb-3">
             <input
               type="text"
@@ -156,7 +176,9 @@ function Analises() {
 
         {dcps.length !== 0 && (
           <div>
-            <h4 className='text-center fw-bold fs-6 border border-white bg-white bg-opacity-25 p-2 my-3'>{empresa}</h4>
+            <h4 className="text-center fw-bold fs-6 border border-white bg-white bg-opacity-25 p-2 my-3">
+              {empresa}
+            </h4>
 
             <table id="tableResult" className="table text-center table-hover">
               <thead>
@@ -169,8 +191,18 @@ function Analises() {
               <tbody>
                 {dcps.map((dcp) => {
                   return (
-                    <tr key={dcp._id} id={dcp._id} onClick={() => { handleClick(dcp.ano, dcp.trimestre); handleSelectedRow(dcp._id) }} style={{ cursor: "pointer" }}>
-                      <td><i className="bi bi-file-earmark-text me-2"></i></td>
+                    <tr
+                      key={dcp._id}
+                      id={dcp._id}
+                      onClick={() => {
+                        handleClick(dcp.ano, dcp.trimestre);
+                        handleSelectedRow(dcp._id);
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <td>
+                        <i className="bi bi-file-earmark-text me-2"></i>
+                      </td>
                       <td>{dcp.ano}</td>
                       <td>{dcp.trimestre}</td>
                     </tr>
@@ -179,7 +211,6 @@ function Analises() {
               </tbody>
             </table>
           </div>
-
         )}
       </div>
 
@@ -192,7 +223,6 @@ function Analises() {
             <span className="py-5 mx-3 fs-3" id="dcpMetaData"></span>
           </div>
           <div className="accordion mx-3" id="accordionExample">
-
             {/* EXPORTAÇÃO DIRETA NO MÊS */}
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingOne">
@@ -221,7 +251,11 @@ function Analises() {
                           Linha
                         </th>
                         {meses.map((mes, i) => {
-                          return (<th colSpan="2" key={i}>{mes}</th>)
+                          return (
+                            <th colSpan="2" key={i}>
+                              {mes}
+                            </th>
+                          );
                         })}
                       </tr>
                       <tr>
@@ -235,13 +269,41 @@ function Analises() {
                     </thead>
                     {!isLoading && (
                       <tbody className="table-group-divider">
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={1} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={2} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={3} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={4} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={5} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={6} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} nLinha={7} />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoExport}
+                          nLinha={1}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoExport}
+                          nLinha={2}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoExport}
+                          nLinha={3}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoExport}
+                          nLinha={4}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoExport}
+                          nLinha={5}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoExport}
+                          nLinha={6}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoExport}
+                          nLinha={7}
+                        />
                       </tbody>
                     )}
                   </table>
@@ -260,7 +322,7 @@ function Analises() {
                   aria-expanded="false"
                   aria-controls="collapseTwo"
                 >
-                  <span className="col-8">Receita Operacional Bruta</span>
+                  <span className="col-8">Receita operacional bruta</span>
                 </button>
               </h2>
               <div
@@ -276,9 +338,13 @@ function Analises() {
                         <th rowSpan="2" style={{ verticalAlign: "middle" }}>
                           Linha
                         </th>
-                        <th colSpan="2">Jan</th>
-                        <th colSpan="2">Fev</th>
-                        <th colSpan="2">Mar</th>
+                        {meses.map((mes, i) => {
+                          return (
+                            <th colSpan="2" key={i}>
+                              {mes}
+                            </th>
+                          );
+                        })}
                       </tr>
                       <tr>
                         <th>Declarado</th>
@@ -291,9 +357,21 @@ function Analises() {
                     </thead>
                     {!isLoading && (
                       <tbody className="table-group-divider">
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoReceita} nLinha={8} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoReceita} nLinha={9} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoReceita} nLinha={10} />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoReceita}
+                          nLinha={8}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoReceita}
+                          nLinha={9}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoReceita}
+                          nLinha={10}
+                        />
                       </tbody>
                     )}
                   </table>
@@ -328,9 +406,13 @@ function Analises() {
                         <th rowSpan="2" style={{ verticalAlign: "middle" }}>
                           Linha
                         </th>
-                        <th colSpan="2">Jan</th>
-                        <th colSpan="2">Fev</th>
-                        <th colSpan="2">Mar</th>
+                        {meses.map((mes, i) => {
+                          return (
+                            <th colSpan="2" key={i}>
+                              {mes}
+                            </th>
+                          );
+                        })}
                       </tr>
                       <tr>
                         <th>Declarado</th>
@@ -343,22 +425,86 @@ function Analises() {
                     </thead>
                     {!isLoading && (
                       <tbody className="table-group-divider">
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={11} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={12} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={13} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={14} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={15} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={16} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={17} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={18} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={19} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={20} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={21} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={22} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={23} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={24} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={25} />
-                        <LinhaDCP dcpsTrimestre={dcpsTrimestre} gomo={gomoInsumo} nLinha={26} />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoInsumo}
+                          nLinha={11}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoInsumo}
+                          nLinha={12}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoInsumo}
+                          nLinha={13}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoInsumo}
+                          nLinha={14}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoInsumo}
+                          nLinha={15}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoInsumo}
+                          nLinha={16}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoInsumo}
+                          nLinha={17}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoInsumo}
+                          nLinha={18}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoInsumo}
+                          nLinha={19}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoInsumo}
+                          nLinha={20}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoInsumo}
+                          nLinha={21}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoInsumo}
+                          nLinha={22}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoInsumo}
+                          nLinha={23}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoInsumo}
+                          nLinha={24}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoInsumo}
+                          nLinha={25}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoInsumo}
+                          nLinha={26}
+                        />
                       </tbody>
                     )}
                   </table>
@@ -366,7 +512,7 @@ function Analises() {
               </div>
             </div>
 
-            {/* PRESTAÇÃO DE SERVIÇOS  */}
+            {/* COMBUSTIVEIS */}
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingFour">
                 <button
@@ -377,13 +523,13 @@ function Analises() {
                   aria-expanded="false"
                   aria-controls="collapseFour"
                 >
-                  <span className="col-8">Prestação de serviços</span>
+                  <span className="col-8">Combustíveis</span>
                 </button>
               </h2>
               <div
                 id="collapseFour"
                 className="accordion-collapse collapse"
-                aria-labelledby="headingFour"
+                aria-labelledby="headingThree"
                 data-bs-parent="#accordionExample"
               >
                 <div className="accordion-body">
@@ -393,9 +539,13 @@ function Analises() {
                         <th rowSpan="2" style={{ verticalAlign: "middle" }}>
                           Linha
                         </th>
-                        <th colSpan="2">Jan</th>
-                        <th colSpan="2">Fev</th>
-                        <th colSpan="2">Mar</th>
+                        {meses.map((mes, i) => {
+                          return (
+                            <th colSpan="2" key={i}>
+                              {mes}
+                            </th>
+                          );
+                        })}
                       </tr>
                       <tr>
                         <th>Declarado</th>
@@ -408,33 +558,86 @@ function Analises() {
                     </thead>
                     {!isLoading && (
                       <tbody className="table-group-divider">
-                        <tr>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                        <tr>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                        <tr>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCombustivel}
+                          nLinha={27}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCombustivel}
+                          nLinha={28}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCombustivel}
+                          nLinha={29}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCombustivel}
+                          nLinha={30}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCombustivel}
+                          nLinha={31}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCombustivel}
+                          nLinha={32}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCombustivel}
+                          nLinha={33}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCombustivel}
+                          nLinha={34}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCombustivel}
+                          nLinha={35}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCombustivel}
+                          nLinha={36}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCombustivel}
+                          nLinha={37}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCombustivel}
+                          nLinha={38}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCombustivel}
+                          nLinha={39}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCombustivel}
+                          nLinha={40}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCombustivel}
+                          nLinha={41}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCombustivel}
+                          nLinha={42}
+                        />
                       </tbody>
                     )}
                   </table>
@@ -442,11 +645,177 @@ function Analises() {
               </div>
             </div>
 
+            {/* ENERGIA */}
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingFive">
+                <button
+                  className="accordion-button fs-4 collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseFive"
+                  aria-expanded="false"
+                  aria-controls="collapseFive"
+                >
+                  <span className="col-8">Energia Elétrica</span>
+                </button>
+              </h2>
+              <div
+                id="collapseFive"
+                className="accordion-collapse collapse"
+                aria-labelledby="headingFive"
+                data-bs-parent="#accordionExample"
+              >
+                <div className="accordion-body">
+                  <table className="table table-hover text-center">
+                    <thead>
+                      <tr>
+                        <th rowSpan="2" style={{ verticalAlign: "middle" }}>
+                          Linha
+                        </th>
+                        {meses.map((mes, i) => {
+                          return (
+                            <th colSpan="2" key={i}>
+                              {mes}
+                            </th>
+                          );
+                        })}
+                      </tr>
+                      <tr>
+                        <th>Declarado</th>
+                        <th>Calculado</th>
+                        <th>Declarado</th>
+                        <th>Calculado</th>
+                        <th>Declarado</th>
+                        <th>Calculado</th>
+                      </tr>
+                    </thead>
+                    {!isLoading && (
+                      <tbody className="table-group-divider">
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoEnergia}
+                          nLinha={43}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoEnergia}
+                          nLinha={44}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoEnergia}
+                          nLinha={45}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoEnergia}
+                          nLinha={46}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoEnergia}
+                          nLinha={47}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoEnergia}
+                          nLinha={48}
+                        />
+                      </tbody>
+                    )}
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            {/* PRESTAÇÃO DE SERVIÇOS  */}
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="headingSix">
+                <button
+                  className="accordion-button fs-4 collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseSix"
+                  aria-expanded="false"
+                  aria-controls="collapseSix"
+                >
+                  <span className="col-8">Prestação de serviços</span>
+                </button>
+              </h2>
+              <div
+                id="collapseSix"
+                className="accordion-collapse collapse"
+                aria-labelledby="headingSix"
+                data-bs-parent="#accordionExample"
+              >
+                <div className="accordion-body">
+                  <table className="table table-hover text-center">
+                    <thead>
+                      <tr>
+                        <th rowSpan="2" style={{ verticalAlign: "middle" }}>
+                          Linha
+                        </th>
+                        {meses.map((mes, i) => {
+                          return (
+                            <th colSpan="2" key={i}>
+                              {mes}
+                            </th>
+                          );
+                        })}
+                      </tr>
+                      <tr>
+                        <th>Declarado</th>
+                        <th>Calculado</th>
+                        <th>Declarado</th>
+                        <th>Calculado</th>
+                        <th>Declarado</th>
+                        <th>Calculado</th>
+                      </tr>
+                    </thead>
+                    {!isLoading && (
+                      <tbody className="table-group-divider">
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={49}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={50}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={51}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={52}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={53}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoServico}
+                          nLinha={54}
+                        />
+                      </tbody>
+                    )}
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* OBSERVAÇÕES */}
         <div id="acoesId" className="d-none mx-3 py-3">
+
         <div className="py-3">
           <textarea className="form-control" id="exampleFormControlTextarea1" rows="4" name="texto" placeholder="Escreva as observações da análise" onChange={handleObservacao}></textarea>
         </div>
@@ -464,6 +833,8 @@ function Analises() {
         
 
         </div>
+
+
         </div>
 
         {/* ANALISES */}
@@ -471,7 +842,6 @@ function Analises() {
           <h2 className="py-5 mx-3">Análises</h2>
         </div>
       </div>
-
     </div>
   );
 }
