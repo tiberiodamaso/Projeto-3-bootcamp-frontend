@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import api from "../api/api.js";
 
-function ListaAnalises({ gomoExport, parentHandleClick }) {
+function ListaAnalises({ gomoExport, parentHandleClick, setCnpj }) {
   const [analises, setAnalises] = useState(null);
   const [reload, setReload] = useState(true);
 
@@ -12,7 +12,6 @@ function ListaAnalises({ gomoExport, parentHandleClick }) {
       setAnalises(response.data);
     }
     get();
-    console.log(analises);
   }, [gomoExport, reload]);
 
   async function handleClickApagar(analise) {
@@ -53,21 +52,36 @@ function ListaAnalises({ gomoExport, parentHandleClick }) {
           analises.map((analise, index) => (
             <tr key={index}>
               <td
-                onClick={() =>
-                  parentHandleClick(analise.ano, analise.trimestre)
-                }
+                onClick={() => {
+                  setCnpj(analise.cnpj);
+                  parentHandleClick(
+                    analise.ano,
+                    analise.trimestre,
+                    analise.cnpj
+                  );
+                }}
               >
                 {formatarCnpj(analise.cnpj)}
               </td>
               <td
-                onClick={() =>
-                  parentHandleClick(analise.ano, analise.trimestre)
-                }
+                onClick={() => {
+                  setCnpj(analise.cnpj);
+                  parentHandleClick(
+                    analise.ano,
+                    analise.trimestre,
+                    analise.cnpj
+                  );
+                }}
               >{`${analise.trimestre} - ${analise.ano}`}</td>
               <td
-                onClick={() =>
-                  parentHandleClick(analise.ano, analise.trimestre)
-                }
+                onClick={() => {
+                  setCnpj(analise.cnpj);
+                  parentHandleClick(
+                    analise.ano,
+                    analise.trimestre,
+                    analise.cnpj
+                  );
+                }}
               >{`${new Date(analise.lastUpdate).getDate()}/${
                 new Date(analise.lastUpdate).getMonth() + 1
               }/${new Date(analise.lastUpdate).getFullYear()}`}</td>

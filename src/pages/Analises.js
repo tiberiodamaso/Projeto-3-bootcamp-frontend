@@ -13,6 +13,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import RelatorioPDF from "../components/RelatorioPDF";
 import ModalNotas from "../components/ModalNotas";
 import ListaAnalises from "../components/ListaAnalises";
+import { getObservacao, saveObservacao } from "../utils/observacao";
 
 function Analises() {
   const [info, setInfo] = useState({cnpj: '', ano: 0, mes: 0,nLinha: 0})
@@ -78,7 +79,7 @@ function Analises() {
   }
 
   // Recupera DCPs e nfes do trimestre
-  async function handleClick(ano, trimestre) {
+  async function handleClick(ano, trimestre, cnpjListaAnalises) {
     let dcpSection = document.querySelector("#dcpSection");
     let dcpMetaData = document.querySelector("#dcpMetaData");
     let acoesId = document.querySelector("#acoesId");
@@ -89,7 +90,7 @@ function Analises() {
     if (trimestre === 2) setMeses(["Abr", "Mai", "Jun"]);
     if (trimestre === 3) setMeses(["Jul", "Ago", "Set"]);
     if (trimestre === 4) setMeses(["Out", "Nov", "Dez"]);
-    const cnpjLimpo = cnpj.replace(/\D/g, "");
+    const cnpjLimpo = cnpjListaAnalises ? cnpjListaAnalises : cnpj.replace(/\D/g, "");
 
     // Recupera DCPs do trimestre
     const response = await api.get(
@@ -115,6 +116,9 @@ function Analises() {
     setGomoCombustivel(combustiveis(trimestre));
     setGomoEnergia(energia(trimestre));
     setGomoServicos(servicos(trimestre));
+
+    getObservacao(cnpjLimpo, ano, trimestre, setObservacao);
+
     setIsLoading(false);
   }
 
@@ -1236,13 +1240,15 @@ function Analises() {
         <div id="acoesId" className="d-none mx-3 py-3">
 
           <div className="py-3">
-            <textarea className="form-control" id="exampleFormControlTextarea1" rows="4" name="texto" placeholder="Escreva as observações da análise" onChange={handleObservacao}></textarea>
+            <textarea value={observacao.texto} className="form-control" id="exampleFormControlTextarea1" rows="4" name="texto" placeholder="Escreva as observações da análise" onChange={handleObservacao}></textarea>
           </div>
 
 
           {/* BOTÕES */}
           <div className="d-flex justify-content-end py-3">
-            {/* <button className="btn btn-primary mx-3">Salvar análise</button> */}
+            <button onClick={() => {
+              saveObservacao(observacao);
+            }} className="btn btn-primary mx-3">Salvar análise</button>
 
         {!isLoading && (
           <PDFDownloadLink document={<RelatorioPDF 
@@ -1270,7 +1276,7 @@ function Analises() {
         {/* ANALISES */}
         <div className="">
           <h2 className="py-5 mx-3">Análises</h2>
-          <ListaAnalises gomoExport={gomoExport} parentHandleClick={handleClick} />
+          <ListaAnalises gomoExport={gomoExport} parentHandleClick={handleClick} setCnpj={setCnpj} />
         </div>
 
       </div>
