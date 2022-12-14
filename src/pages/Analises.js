@@ -7,9 +7,10 @@ import {
   combustiveis,
   energia,
   servicos,
+  calculo,
 } from "../utils/montaDCP";
 import { LinhaDCP } from "../components/Linha";
-import { PDFDownloadLink } from '@react-pdf/renderer';
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import RelatorioPDF from "../components/RelatorioPDF";
 
 function Analises() {
@@ -24,8 +25,9 @@ function Analises() {
   const [gomoCombustivel, setGomoCombustivel] = useState([]);
   const [gomoEnergia, setGomoEnergia] = useState([]);
   const [gomoServico, setGomoServicos] = useState([]);
+  const [gomoCalculo, setGomoCalculo] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [observacao, setObservacao] = useState({texto: ""});
+  const [observacao, setObservacao] = useState({ texto: "" });
 
   // Coloca a máscara no CNPJ
   function handleChange(e) {
@@ -101,16 +103,34 @@ function Analises() {
       params: { cnpj: cnpjLimpo, trimestre: trimestre, ano: ano },
     });
 
-    setGomoReceita(
-      receitas(resposta.data, respostaAnalise.data, ano, trimestre)
-    );
-    setGomoInsumo(insumos(resposta.data, respostaAnalise.data, ano, trimestre));
     setGomoExport(
       exportacoes(resposta.data, respostaAnalise.data, ano, trimestre)
     );
-    setGomoCombustivel(combustiveis(trimestre));
-    setGomoEnergia(energia(trimestre));
-    setGomoServicos(servicos(trimestre));
+    setGomoReceita(
+      receitas(resposta.data, respostaAnalise.data, ano, trimestre)
+    );
+    setGomoInsumo(
+      insumos(
+        response.data,
+        resposta.data,
+        respostaAnalise.data,
+        ano,
+        trimestre
+      )
+    );
+
+    setGomoCombustivel(combustiveis(response.data, trimestre));
+    setGomoEnergia(energia(response.data, trimestre));
+    setGomoServicos(servicos(response.data, trimestre));
+    setGomoCalculo(
+      calculo(
+        response.data,
+        resposta.data,
+        respostaAnalise.data,
+        ano,
+        trimestre
+      )
+    );
     setIsLoading(false);
   }
 
@@ -124,13 +144,12 @@ function Analises() {
       table.rows[i].classList.remove("bg-opacity-50");
     }
     selectedRow.classList.add("bg-white");
-    selectedRow.classList.add("bg-opacity-50");  
-
+    selectedRow.classList.add("bg-opacity-50");
   }
 
-  // Campo observações da análise 
-  function handleObservacao(e){
-    setObservacao({...observacao, [e.target.name]: e.target.value});
+  // Campo observações da análise
+  function handleObservacao(e) {
+    setObservacao({ ...observacao, [e.target.name]: e.target.value });
   }
 
   return (
@@ -842,33 +861,18 @@ function Analises() {
                       <tbody className="table-group-divider">
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={49}
+                          gomo={gomoCalculo}
+                          nLinha={55}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={50}
+                          gomo={gomoCalculo}
+                          nLinha={56}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={51}
-                        />
-                        <LinhaDCP
-                          dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={52}
-                        />
-                        <LinhaDCP
-                          dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={53}
-                        />
-                        <LinhaDCP
-                          dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={54}
+                          gomo={gomoCalculo}
+                          nLinha={57}
                         />
                       </tbody>
                     )}
@@ -888,7 +892,9 @@ function Analises() {
                   aria-expanded="false"
                   aria-controls="collapseEight"
                 >
-                  <span className="col-8">Valores utilizados do crédito presumido</span>
+                  <span className="col-8">
+                    Valores utilizados do crédito presumido
+                  </span>
                 </button>
               </h2>
               <div
@@ -925,33 +931,83 @@ function Analises() {
                       <tbody className="table-group-divider">
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={49}
+                          gomo={gomoCalculo}
+                          nLinha={58}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={50}
+                          gomo={gomoCalculo}
+                          nLinha={59}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={51}
+                          gomo={gomoCalculo}
+                          nLinha={60}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={52}
+                          gomo={gomoCalculo}
+                          nLinha={61}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={53}
+                          gomo={gomoCalculo}
+                          nLinha={62}
                         />
                         <LinhaDCP
                           dcpsTrimestre={dcpsTrimestre}
-                          gomo={gomoServico}
-                          nLinha={54}
+                          gomo={gomoCalculo}
+                          nLinha={63}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={64}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={65}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={66}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={67}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={68}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={69}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={70}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={71}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={72}
+                        />
+                        <LinhaDCP
+                          dcpsTrimestre={dcpsTrimestre}
+                          gomo={gomoCalculo}
+                          nLinha={73}
                         />
                       </tbody>
                     )}
@@ -964,26 +1020,46 @@ function Analises() {
 
         {/* OBSERVAÇÕES */}
         <div id="acoesId" className="d-none mx-3 py-3">
+          <div className="py-3">
+            <textarea
+              className="form-control"
+              id="exampleFormControlTextarea1"
+              rows="4"
+              name="texto"
+              placeholder="Escreva as observações da análise"
+              onChange={handleObservacao}
+            ></textarea>
+          </div>
 
-        <div className="py-3">
-          <textarea className="form-control" id="exampleFormControlTextarea1" rows="4" name="texto" placeholder="Escreva as observações da análise" onChange={handleObservacao}></textarea>
-        </div>
+          {/* BOTÕES */}
+          <div className="d-flex justify-content-end py-3">
+            {/* <button className="btn btn-primary mx-3">Salvar análise</button> */}
 
-
-        {/* BOTÕES */}
-        <div className="d-flex justify-content-end py-3">
-         {/* <button className="btn btn-primary mx-3">Salvar análise</button> */}
-
-        {!isLoading && (
-          <PDFDownloadLink document={<RelatorioPDF empresa={empresa} trimestre={meses} dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} observacao={observacao.texto} />} fileName="relatorio">
-          {({loading}) => (loading ? <button className="btn btn-outline-primary">Carregando...</button>:<button className="btn btn-primary">Gerar relatório</button>)} 
-        </PDFDownloadLink>
-        )} 
-        
-
-        </div>
-
-
+            {!isLoading && (
+              <PDFDownloadLink
+                document={
+                  <RelatorioPDF
+                    empresa={empresa}
+                    trimestre={meses}
+                    dcpsTrimestre={dcpsTrimestre}
+                    gomo={gomoExport}
+                    observacao={observacao.texto}
+                  />
+                }
+                fileName="relatorio"
+              >
+                {({ loading }) =>
+                  loading ? (
+                    <button className="btn btn-outline-primary">
+                      Carregando...
+                    </button>
+                  ) : (
+                    <button className="btn btn-primary">Gerar relatório</button>
+                  )
+                }
+              </PDFDownloadLink>
+            )}
+          </div>
         </div>
 
         {/* ANALISES */}

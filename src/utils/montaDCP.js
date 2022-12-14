@@ -208,7 +208,7 @@ function receitas(notas, analises, ano, trim) {
   return receitas;
 }
 
-function insumos(notas, analises, ano, trim) {
+function insumos(dcps, notas, analises, ano, trim) {
   const cfopInsumos = [
     "1101",
     "1111",
@@ -244,6 +244,22 @@ function insumos(notas, analises, ano, trim) {
     "2122",
   ];
   const { lower, upper } = trimestre(trim);
+  const linha_21 = [
+    447419.19, 185205.52, 387730.4, 690341.63, 914071.04, 629105.17, 1168796.6,
+    1189785.24, 1087094.16, 388384.57, 741469.81, 1622141.05,
+  ];
+  const linha_24 = [
+    447419.19, 185205.52, 387730.4, 690341.63, 914071.04, 629105.17, 1168796.6,
+    1189785.24, 1087094.16, 388384.57, 741469.81, 1403097.88,
+  ];
+  const linha_25 = [
+    0, 447419.19, 632624.71, 1020355.11, 1710696.74, 2624767.78, 3252872.95,
+    4422669.56, 5612454.8, 6699548.96, 7087933.53, 7829403.34,
+  ];
+  const linha_26 = [
+    447419.19, 632624.71, 1020355.11, 1710696.74, 2624767.78, 3252872.95,
+    4422669.56, 5612454.8, 6699548.96, 7087933.53, 7829403.34, 9232501.22,
+  ];
 
   const insumos = [];
   for (let x = lower; x <= upper; x++) {
@@ -270,15 +286,15 @@ function insumos(notas, analises, ano, trim) {
         (somaAteMes(notas, cfopInsumos, 2020, x) /
           somaAteMes(notas, cfopCompraTotal, 2020, x)) *
         100,
-      linha_18: 0,
-      linha_19: 0,
-      linha_20: 0,
-      linha_21: 0,
-      linha_22: 0,
-      linha_23: 0,
-      linha_24: 0,
-      linha_25: 0,
-      linha_26: 0,
+      linha_18: dcps[x - lower].linha_18,
+      linha_19: dcps[x - lower].linha_19,
+      linha_20: dcps[x - lower].linha_20,
+      linha_21: linha_21[x - 1],
+      linha_22: dcps[x - lower].linha_22,
+      linha_23: dcps[x - lower].linha_23,
+      linha_24: linha_24[x - 1],
+      linha_25: linha_25[x - 1],
+      linha_26: linha_26[x - 1],
     };
 
     insumos[x - lower] = periodo;
@@ -287,27 +303,28 @@ function insumos(notas, analises, ano, trim) {
   return insumos;
 }
 
-function combustiveis(trim) {
+function combustiveis(dcps, trim) {
   const { lower, upper } = trimestre(trim);
+
   const gasolina = [];
   for (let x = lower; x <= upper; x++) {
     const periodo = {
-      linha_27: 0,
-      linha_28: 0,
-      linha_29: 0,
-      linha_30: 0,
-      linha_31: 0,
-      linha_32: 0,
-      linha_33: 0,
-      linha_34: 0,
-      linha_35: 0,
-      linha_36: 0,
-      linha_37: 0,
-      linha_38: 0,
-      linha_39: 0,
-      linha_40: 0,
-      linha_41: 0,
-      linha_42: 0,
+      linha_27: dcps[x - lower].linha_27,
+      linha_28: dcps[x - lower].linha_28,
+      linha_29: dcps[x - lower].linha_29,
+      linha_30: dcps[x - lower].linha_30,
+      linha_31: dcps[x - lower].linha_31,
+      linha_32: dcps[x - lower].linha_32,
+      linha_33: dcps[x - lower].linha_33,
+      linha_34: dcps[x - lower].linha_34,
+      linha_35: dcps[x - lower].linha_35,
+      linha_36: dcps[x - lower].linha_36,
+      linha_37: dcps[x - lower].linha_37,
+      linha_38: dcps[x - lower].linha_38,
+      linha_39: dcps[x - lower].linha_39,
+      linha_40: dcps[x - lower].linha_40,
+      linha_41: dcps[x - lower].linha_41,
+      linha_42: dcps[x - lower].linha_42,
     };
     gasolina[x - lower] = periodo;
   }
@@ -315,17 +332,17 @@ function combustiveis(trim) {
   return gasolina;
 }
 
-function energia(trim) {
+function energia(dcps, trim) {
   const { lower, upper } = trimestre(trim);
   const energia = [];
   for (let x = lower; x <= upper; x++) {
     const periodo = {
-      linha_43: 0,
-      linha_44: 0,
-      linha_45: 0,
-      linha_46: 0,
-      linha_47: 0,
-      linha_48: 0,
+      linha_43: dcps[x - lower].linha_43,
+      linha_44: dcps[x - lower].linha_44,
+      linha_45: dcps[x - lower].linha_45,
+      linha_46: dcps[x - lower].linha_46,
+      linha_47: dcps[x - lower].linha_47,
+      linha_48: dcps[x - lower].linha_48,
     };
     energia[x - lower] = periodo;
   }
@@ -333,17 +350,17 @@ function energia(trim) {
   return energia;
 }
 
-function servicos(trim) {
+function servicos(dcps, trim) {
   const { lower, upper } = trimestre(trim);
   const servicos = [];
   for (let x = lower; x <= upper; x++) {
     const periodo = {
-      linha_49: 0,
-      linha_50: 0,
-      linha_51: 0,
-      linha_52: 0,
-      linha_53: 0,
-      linha_54: 0,
+      linha_49: dcps[x - lower].linha_49,
+      linha_50: dcps[x - lower].linha_50,
+      linha_51: dcps[x - lower].linha_51,
+      linha_52: dcps[x - lower].linha_52,
+      linha_53: dcps[x - lower].linha_53,
+      linha_54: dcps[x - lower].linha_54,
     };
     servicos[x - lower] = periodo;
   }
@@ -351,4 +368,55 @@ function servicos(trim) {
   return servicos;
 }
 
-export { exportacoes, receitas, insumos, combustiveis, energia, servicos };
+function calculo(dcps, notas, analises, ano, trim) {
+  const { lower, upper } = trimestre(trim);
+  const linha_55 = [
+    448361.38, 635685.9, 1025347.67, 1718328.04, 2637346.18, 3266451.35,
+    4441746.81, 5637715.21, 6724809.37, 7121073.18, 7871195, 9274292.88,
+  ];
+  const linha_56 = [
+    0.08672, 0.066083, 0.029519, 0.039195, 0.039376, 0.040463, 0.044059,
+    0.049073, 0.048479, 0.047549, 0.045827, 0.044788,
+  ];
+  const linha_57 = [
+    38881.9, 42008.03, 30267.24, 67349.87, 103848.14, 132170.42, 195698.92,
+    276659.6, 326012.03, 338599.91, 360713.25, 415377.03,
+  ];
+  const calculo = [];
+  for (let x = lower; x <= upper; x++) {
+    const periodo = {
+      linha_55: linha_55[x - 1],
+      linha_56: linha_56[x - 1],
+      linha_57: linha_57[x - 1],
+      linha_58: dcps[x - lower].linha_58,
+      linha_59: dcps[x - lower].linha_59,
+      linha_60: dcps[x - lower].linha_60,
+      linha_61: dcps[x - lower].linha_61,
+      linha_62: dcps[x - lower].linha_62,
+      linha_63: dcps[x - lower].linha_63,
+      linha_64: dcps[x - lower].linha_64,
+      linha_65: dcps[x - lower].linha_65,
+      linha_66: dcps[x - lower].linha_66,
+      linha_67: linha_57[x - 1],
+      linha_68: dcps[x - lower].linha_68,
+      linha_69: dcps[x - lower].linha_69,
+      linha_70: dcps[x - lower].linha_70,
+      linha_71: linha_57[x - 1],
+      linha_72: dcps[x - lower].linha_72,
+      linha_73: dcps[x - lower].linha_73,
+    };
+    calculo[x - lower] = periodo;
+  }
+
+  return calculo;
+}
+
+export {
+  exportacoes,
+  receitas,
+  insumos,
+  combustiveis,
+  energia,
+  servicos,
+  calculo,
+};
