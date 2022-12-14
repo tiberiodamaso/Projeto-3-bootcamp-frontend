@@ -11,6 +11,7 @@ import {
 import { LinhaDCP } from "../components/Linha";
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import RelatorioPDF from "../components/RelatorioPDF";
+import ListaAnalises from "../components/ListaAnalises";
 
 function Analises() {
   const [dcps, setDCPs] = useState([]);
@@ -989,6 +990,7 @@ function Analises() {
         {/* ANALISES */}
         <div className="">
           <h2 className="py-5 mx-3">Análises</h2>
+          <ListaAnalises gomoExport={gomoExport} parentHandleClick={handleClick} />
         </div>
       </div>
     </div>
