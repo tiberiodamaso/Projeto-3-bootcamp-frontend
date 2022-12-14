@@ -54,7 +54,11 @@ function ListaAnalises({ gomoExport, parentHandleClick, setCnpj }) {
               <td
                 onClick={() => {
                   setCnpj(analise.cnpj);
-                  parentHandleClick(analise.ano, analise.trimestre);
+                  parentHandleClick(
+                    analise.ano,
+                    analise.trimestre,
+                    analise.cnpj
+                  );
                 }}
               >
                 {formatarCnpj(analise.cnpj)}
@@ -62,13 +66,21 @@ function ListaAnalises({ gomoExport, parentHandleClick, setCnpj }) {
               <td
                 onClick={() => {
                   setCnpj(analise.cnpj);
-                  parentHandleClick(analise.ano, analise.trimestre);
+                  parentHandleClick(
+                    analise.ano,
+                    analise.trimestre,
+                    analise.cnpj
+                  );
                 }}
               >{`${analise.trimestre} - ${analise.ano}`}</td>
               <td
                 onClick={() => {
                   setCnpj(analise.cnpj);
-                  parentHandleClick(analise.ano, analise.trimestre);
+                  parentHandleClick(
+                    analise.ano,
+                    analise.trimestre,
+                    analise.cnpj
+                  );
                 }}
               >{`${new Date(analise.lastUpdate).getDate()}/${
                 new Date(analise.lastUpdate).getMonth() + 1
