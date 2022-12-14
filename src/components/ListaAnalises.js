@@ -38,19 +38,19 @@ function ListaAnalises({ gomoExport, parentHandleClick, setCnpj }) {
   }
 
   return (
-    <table>
+    <table className="table table-hover">
       <thead>
         <tr>
-          <th>CNPJ</th>
-          <th>Trimestre</th>
-          <th>Última atualização</th>
-          <th>Ação</th>
+          <th scope="col">CNPJ</th>
+          <th scope="col">Trimestre</th>
+          <th scope="col">Última atualização</th>
+          <th scope="col">Ação</th>
         </tr>
       </thead>
       <tbody>
         {analises &&
           analises.map((analise, index) => (
-            <tr key={index}>
+            <tr key={index} scope="row">
               <td
                 onClick={() => {
                   setCnpj(analise.cnpj);
