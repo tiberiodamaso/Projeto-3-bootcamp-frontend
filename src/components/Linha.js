@@ -6,13 +6,6 @@ function LinhaDCP({ dcpsTrimestre, gomo, nLinha }) {
   const navigate = useNavigate();
   const clicavel = [4, 5, 9]; // Linhas da DCP que são clicáveis
   const [dcp1, dcp2, dcp3] = dcpsTrimestre;
-  // const linhas = Array.from(document.querySelectorAll('.linha'))
-  // const linha4 = linhas.filter(linha => linha.parentElement.dataset.linha === '4')
-  // const tr = linhas.filter(linha => linha.parentNode.dataset.linha === 4)
-  // console.log(tr)
-  // const trLinha = teste.previousSibling
-  // console.log(trLinha.dataset.linha)
-
 
   // Recupera as notas fiscais referentes ao ano e mês do cnpj pesquisado
   function getNotas(e) {

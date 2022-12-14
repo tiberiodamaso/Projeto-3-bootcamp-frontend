@@ -124,24 +124,6 @@ function Analises() {
     selectedRow.classList.add("bg-opacity-50");
   }
 
-  // Checa se os valores declarados e calculados são divergentes
-  function checkValues() {
-    let declarado1 = document.querySelector("#declarado1");
-    let calculado1 = document.querySelector("#calculado1");
-    if (declarado1.innerText !== calculado1.innerText)
-      calculado1.classList.add("text-danger");
-  }
-
-  // Checa se os valores declarados e calculados são divergentes
-  function test(e) {
-    const event = e;
-    console.log(e);
-    let declarado1 = document.querySelector("#declarado1");
-    let calculado1 = document.querySelector("#calculado1");
-    if (declarado1.innerText !== calculado1.innerText)
-      calculado1.classList.add("text-danger");
-  }
-
   return (
     <div className="d-flex">
       {/* SIDEBAR */}
@@ -330,9 +312,13 @@ function Analises() {
                         <th rowSpan="2" style={{ verticalAlign: "middle" }}>
                           Linha
                         </th>
-                        <th colSpan="2">Jan</th>
-                        <th colSpan="2">Fev</th>
-                        <th colSpan="2">Mar</th>
+                        {meses.map((mes, i) => {
+                          return (
+                            <th colSpan="2" key={i}>
+                              {mes}
+                            </th>
+                          );
+                        })}
                       </tr>
                       <tr>
                         <th>Declarado</th>
@@ -394,9 +380,13 @@ function Analises() {
                         <th rowSpan="2" style={{ verticalAlign: "middle" }}>
                           Linha
                         </th>
-                        <th colSpan="2">Jan</th>
-                        <th colSpan="2">Fev</th>
-                        <th colSpan="2">Mar</th>
+                        {meses.map((mes, i) => {
+                          return (
+                            <th colSpan="2" key={i}>
+                              {mes}
+                            </th>
+                          );
+                        })}
                       </tr>
                       <tr>
                         <th>Declarado</th>
@@ -523,9 +513,13 @@ function Analises() {
                         <th rowSpan="2" style={{ verticalAlign: "middle" }}>
                           Linha
                         </th>
-                        <th colSpan="2">Jan</th>
-                        <th colSpan="2">Fev</th>
-                        <th colSpan="2">Mar</th>
+                        {meses.map((mes, i) => {
+                          return (
+                            <th colSpan="2" key={i}>
+                              {mes}
+                            </th>
+                          );
+                        })}
                       </tr>
                       <tr>
                         <th>Declarado</th>
@@ -652,9 +646,13 @@ function Analises() {
                         <th rowSpan="2" style={{ verticalAlign: "middle" }}>
                           Linha
                         </th>
-                        <th colSpan="2">Jan</th>
-                        <th colSpan="2">Fev</th>
-                        <th colSpan="2">Mar</th>
+                        {meses.map((mes, i) => {
+                          return (
+                            <th colSpan="2" key={i}>
+                              {mes}
+                            </th>
+                          );
+                        })}
                       </tr>
                       <tr>
                         <th>Declarado</th>
@@ -731,9 +729,13 @@ function Analises() {
                         <th rowSpan="2" style={{ verticalAlign: "middle" }}>
                           Linha
                         </th>
-                        <th colSpan="2">Jan</th>
-                        <th colSpan="2">Fev</th>
-                        <th colSpan="2">Mar</th>
+                        {meses.map((mes, i) => {
+                          return (
+                            <th colSpan="2" key={i}>
+                              {mes}
+                            </th>
+                          );
+                        })}
                       </tr>
                       <tr>
                         <th>Declarado</th>
