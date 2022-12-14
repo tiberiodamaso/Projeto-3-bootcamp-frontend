@@ -12,6 +12,7 @@ import { LinhaDCP } from "../components/Linha";
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import RelatorioPDF from "../components/RelatorioPDF";
 import ModalNotas from "../components/ModalNotas";
+import ListaAnalises from "../components/ListaAnalises";
 
 function Analises() {
   const [info, setInfo] = useState({cnpj: '', ano: 0, mes: 0,nLinha: 0})
@@ -1243,11 +1244,22 @@ function Analises() {
           <div className="d-flex justify-content-end py-3">
             {/* <button className="btn btn-primary mx-3">Salvar análise</button> */}
 
-            {!isLoading && (
-              <PDFDownloadLink document={<RelatorioPDF empresa={empresa} trimestre={meses} dcpsTrimestre={dcpsTrimestre} gomo={gomoExport} observacao={observacao.texto} />} fileName="relatorio">
-                {({ loading }) => (loading ? <button className="btn btn-outline-primary">Carregando...</button> : <button className="btn btn-primary">Gerar relatório</button>)}
-              </PDFDownloadLink>
-            )}
+        {!isLoading && (
+          <PDFDownloadLink document={<RelatorioPDF 
+                empresa={empresa} 
+                trimestre={meses} 
+                dcpsTrimestre={dcpsTrimestre} 
+                gomoExport={gomoExport}
+                gomoReceita={gomoReceita}
+                gomoInsumo={gomoInsumo}
+                gomoCombustivel={gomoCombustivel}
+                gomoEnergia={gomoEnergia}
+                gomoServico={gomoServico}
+                observacao={observacao.texto} />} fileName="relatorio">
+          {({loading}) => (loading ? <button className="btn btn-outline-primary">Carregando...</button>:<button className="btn btn-primary">Gerar relatório</button>)} 
+        </PDFDownloadLink>
+        )} 
+        
 
 
           </div>
@@ -1258,6 +1270,7 @@ function Analises() {
         {/* ANALISES */}
         <div className="">
           <h2 className="py-5 mx-3">Análises</h2>
+          <ListaAnalises gomoExport={gomoExport} parentHandleClick={handleClick} />
         </div>
 
       </div>
