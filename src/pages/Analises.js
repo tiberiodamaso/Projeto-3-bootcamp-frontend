@@ -31,6 +31,7 @@ function Analises() {
   const [gomoServico, setGomoServicos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [observacao, setObservacao] = useState({ texto: "" });
+  const [nfesDesconsideradas, setNfesDesconsideradas] = useState([]);
 
   // Coloca a máscara no CNPJ
   function handleChange(e) {
@@ -119,6 +120,10 @@ function Analises() {
 
     getObservacao(cnpjLimpo, ano, trimestre, setObservacao);
 
+    // nfes
+    const responseNfes = await api.get(`/analise/analise-atual?cnpj=${cnpjLimpo}&ano=${ano}&trimestre=${trimestre}`);
+    setNfesDesconsideradas(responseNfes.data)
+    
     setIsLoading(false);
   }
 
@@ -1261,7 +1266,8 @@ function Analises() {
                 gomoCombustivel={gomoCombustivel}
                 gomoEnergia={gomoEnergia}
                 gomoServico={gomoServico}
-                observacao={observacao.texto} />} fileName="relatorio">
+                observacao={observacao.texto}
+                nfesDesconsideradas={nfesDesconsideradas} />} fileName="relatorio">
           {({loading}) => (loading ? <button className="btn btn-outline-primary">Carregando...</button>:<button className="btn btn-primary">Gerar relatório</button>)} 
         </PDFDownloadLink>
         )} 
