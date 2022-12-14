@@ -113,13 +113,21 @@ function Analises() {
     setGomoReceita(
       receitas(resposta.data, respostaAnalise.data, ano, trimestre)
     );
-    setGomoInsumo(insumos(resposta.data, respostaAnalise.data, ano, trimestre));
+    setGomoInsumo(
+      insumos(
+        response.data,
+        resposta.data,
+        respostaAnalise.data,
+        ano,
+        trimestre
+      )
+    );
     setGomoExport(
       exportacoes(resposta.data, respostaAnalise.data, ano, trimestre)
     );
-    setGomoCombustivel(combustiveis(trimestre));
-    setGomoEnergia(energia(trimestre));
-    setGomoServicos(servicos(trimestre));
+    setGomoCombustivel(combustiveis(response.data, trimestre));
+    setGomoEnergia(energia(response.data, trimestre));
+    setGomoServicos(servicos(response.data, trimestre));
     setGomoCalculo(
       calculo(
         response.data,
@@ -1082,6 +1090,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={55}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1090,6 +1099,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={56}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1098,6 +1108,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={57}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1161,6 +1172,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={58}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1169,6 +1181,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={59}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1177,6 +1190,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={60}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1185,6 +1199,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={61}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1193,6 +1208,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={62}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1201,6 +1217,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={63}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1209,6 +1226,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={64}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1217,6 +1235,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={65}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1225,6 +1244,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={66}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1233,6 +1253,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={67}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1241,6 +1262,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={68}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1249,6 +1271,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={69}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1257,6 +1280,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={70}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1265,6 +1289,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={71}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1273,6 +1298,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={72}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
@@ -1281,6 +1307,7 @@ function Analises() {
                           dcpsTrimestre={dcpsTrimestre}
                           gomo={gomoCalculo}
                           nLinha={73}
+                          showModal={showModal}
                           setShowModal={setShowModal}
                           info={info}
                           setInfo={setInfo}
