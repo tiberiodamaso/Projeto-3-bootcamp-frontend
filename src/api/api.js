@@ -2,7 +2,7 @@ import axios from "axios";
 
 const apiURLs = {
   development: "http://localhost:8080",
-  production: "",
+  production: "https://analisedcp.netlify.app",
 };
 
 // Essa instância do axios sabe qual é a baseURL que deve ser usada nas requisições
