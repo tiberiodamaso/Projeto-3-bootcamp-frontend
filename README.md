@@ -1,70 +1,76 @@
-# Getting Started with Create React App
+# Análise DCP
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Front End application oriented to SPA
 
-## Available Scripts
+## Technologies used
 
-In the project directory, you can run:
+- [React](https://reactjs.org/) single page application
+- Routing done using [React Router](https://reacttraining.com/react-router/web/guides/philosophy)
+- [API](https://analisedcp.cyclic.app/) 
 
-### `npm start`
+### Architecture diagrams
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Diagram
+[Diagram](/src/assets/diagram.png)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Setup
 
-### `npm test`
+1. Clone the repository and install the dependencies
+```bash
+npm install
+```
+2. Start the frontend application locally
+```bash
+npm start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Available commands
 
-### `npm run build`
+* `npm start`: Start the app locally in your development environment, by default it will be in http://localhost:3000.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Development flow
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Here are the steps of the process you need to follow in order to integrate new code or a new feature into the project:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Create a local branch to get started using git: `git checkout -b <your-name>`.
+1. Develop the new feature while doing atomic commits to your local branch using `git commit`.
+1. After you are done, you might want to do a `git rebase develop` in case new changes were integrated, so your new commits are applied on top of that and you make sure everything still works.
+1. Now you are ready to create a new Pull Request with your changes, but before, push your changes to origin using `git push -u origin <your-branch-name>`.
+1. Your code should be reviewed, you can update the branch with new changes after you get some feedback.
+1. After the Pull Request is approved, merge it using the UI on Github (you can also remove the branch directly from the same page, which is also convenient). Your code will land to the `develop` branch (and eventually deployed into the staging environment).
 
-### `npm run eject`
+## CSS framework
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+This project implements [Bootstrap](https://getbootstrap.com) and [Bootstrap icons](https://icons.getbootstrap.com/)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Routes
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+This project is using [`react-router-dom v6.4.3`](https://reacttraining.com/react-router/core), have a look at `Routes.jsx` which is the file that defines the routes that are available.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+There are several routes to navigate to different pages of the app:
 
-## Learn More
+1. path="/" Login
+1. path="/signup" Criar conta de usuário
+1. path="/profile" Ver e editar o perfil do usuário
+1. path="/analises" Recupera as análises realizadas pelo usuários nas DCPs
+1. path="/logs" Recupera os logs (disponível apenas para usuário administrador do sistema)
+1. path="/relatorio" Gera relatório em PDF com as análises do usuário
+1. path="/notas" Recupera as notas fiscais do banco de dados
+1. path="*" Trata de páginas inexistentes
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## CI/CD
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Autodeploy on new push to GitHub
 
-### Code Splitting
+## Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Deployed using netlify.com
+[Netlify](https://www.netlify.com/)
 
-### Analyzing the Bundle Size
+### Test deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The `main` branch deploys to https://analisedcp.netlify.app/
 
-### Making a Progressive Web App
+### Backend address
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+https://analisedcp.cyclic.app/
