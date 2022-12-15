@@ -74,7 +74,7 @@ function Profile() {
       {!isLoading && (<form className="col-6 col-md-3 m-auto" onSubmit={handleSubmit}>
         <h2 className="text-center">Editar perfil</h2>
         <div className="text-center mb-3">
-          <img className="rounded-circle" src={user.imgProfile} alt="imagem do perfil" />
+          <img className="rounded-circle w-100" src={user.imgProfile} alt="imagem do perfil" />
         </div>
         <div className="mb-3">
           <label htmlFor="formFile" className="form-label">Foto do perfil</label>
