@@ -3,28 +3,39 @@ import { useState, useEffect } from "react";
 import { LinhaNota } from "./Linha";
 
 
-function ModalNotas({info, showModal}) {
+function ModalNotas({ info, setInfo, showModal }) {
   const [notas, setNotas] = useState([])
+  const [notasExcluidas, setNotasExcluidas] = useState([])
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchNotas() {
+      const trimestre = Math.floor(((info.mes - 1) + 3) / 3 )
       const response = await api.get(`/nfe/mes?cnpj=${info.cnpj}&ano=${info.ano}&mes=${info.mes}&nLinha=${info.nLinha}`)
+      const resposta = await api.get(`/analise/analise-atual?cnpj=${info.cnpj}&ano=${info.ano}&trimestre=${trimestre}`)
       setNotas(response.data)
+      setNotasExcluidas(resposta.data)
+      const notasExcluidasId = notasExcluidas.map(nota => {
+        return nota._id
+      })
+      setInfo({...info, notasExcluidas: notasExcluidasId})
+      // console.log(info)
+      // console.log(notasExcluidasId)
       setIsLoading(false)
     }
     fetchNotas()
-    // console.log('useeffectmodal')
   }, [showModal])
-  
+
   async function handleSubmit() {
+    const trimestre = Math.floor(((info.mes - 1) + 3) / 3 )
     const notasArray = Array.from(document.querySelectorAll(".text-decoration-line-through"))
     const notasDesconsideradas = notasArray.map(nota => nota.dataset.id)
     info[`desconsideradas_linha_${info.nLinha}`] = notasDesconsideradas
-    console.log(info)
     await api.put(`/analise/update?cnpj=${info.cnpj}&ano=${info.ano}&mes=${info.mes}&nLinha=${info.nLinha}`, info)
+    info.parentHandleClick(info.ano, trimestre, info.cnpj)
+
   }
-  
+
   // console.log(info)
   return (
     <div className="modal modal-xl" id="modalNotas" data-bs-backdrop="static">

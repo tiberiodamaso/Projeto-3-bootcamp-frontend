@@ -18,9 +18,8 @@ import { getObservacao, saveObservacao } from "../utils/observacao";
 
 function Analises() {
 
-  const [info, setInfo] = useState({ cnpj: "", ano: 0, mes: 0, nLinha: 0 });
+  const [info, setInfo] = useState({ cnpj: "", ano: 0, mes: 0, nLinha: 0, parentHandleClick: handleClick, notasExcluidas: [] });
   const [showModal, setShowModal] = useState(true);
-
   const [dcps, setDCPs] = useState([]);
   const [cnpj, setCnpj] = useState("");
   const [empresa, setEmpresa] = useState("");
@@ -37,6 +36,9 @@ function Analises() {
   const [observacao, setObservacao] = useState({ texto: "" });
   const [nfesDesconsideradas, setNfesDesconsideradas] = useState([]);
 
+  function soma() {
+    console.log('4')
+  }
   // Coloca a máscara no CNPJ
   function handleChange(e) {
     // Get only the numbers from the data input
@@ -1390,7 +1392,7 @@ function Analises() {
 
       {/* MODAL */}
 
-      <ModalNotas showModal={showModal} setShowModal={setShowModal} info={info} />
+      <ModalNotas showModal={showModal} setShowModal={setShowModal} info={info} setInfo={setInfo} />
 
 
     </div>
