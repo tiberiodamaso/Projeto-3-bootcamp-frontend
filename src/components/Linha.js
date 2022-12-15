@@ -1,7 +1,7 @@
 import { Modal } from 'bootstrap';
 import api from '../api/api';
 
-function LinhaDCP({ dcpsTrimestre, gomo, nLinha, setShowModal, showModal, setInfo }) {
+function LinhaDCP({ dcpsTrimestre, gomo, nLinha, setShowModal, showModal, info, setInfo }) {
 
   const descricoes = require('../utils/descricaolinhas.json');
   const clicavel = [4, 5, 9]; // Linhas da DCP que são clicáveis
@@ -13,11 +13,12 @@ function LinhaDCP({ dcpsTrimestre, gomo, nLinha, setShowModal, showModal, setInf
       const modalNotas = new Modal("#modalNotas")
       modalNotas.show()
   
-      setInfo({
+      setInfo({...info,
         cnpj: dcp1.cnpj,
         ano: dcp1.ano,
         mes: e.target.dataset.mes,
-        nLinha: nLinha
+        nLinha: nLinha,
+        notasExcluidas: []
       })
       setShowModal(!showModal)
     }
@@ -112,14 +113,13 @@ function LinhaDCP({ dcpsTrimestre, gomo, nLinha, setShowModal, showModal, setInf
 
 function LinhaNota({ nota, info }) {
 
-  // var notasDesconsideradas = []
-
   function handleNota(e) {
     e.target.parentElement.parentElement.classList.toggle("text-decoration-line-through")
   }
-
+  console.log(info)
   return (
-    <tr style={{ verticalAlign: "middle" }} data-id={nota._id}>
+    
+    <tr style={{ verticalAlign: "middle" }} className={`${info.notasExcluidas.includes(nota._id) ? "text-decoration-line-through" : ""}`} data-id={nota._id}>
       <td>{nota.operacao}</td>
       <td>{nota.pais}</td>
       <td>{nota.cfop}</td>
