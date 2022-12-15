@@ -52,12 +52,7 @@ function Profile() {
     e.preventDefault()
     const imgURL = await handleUpload()
     await api.put('/user/update', { ...user, imgProfile: imgURL })
-    // setForm({
-    //   imgProfile: '',
-    //   first_name: '',
-    //   last_name: '',
-    //   email: '',
-    // })
+    toast.success("Perfil atualizado com sucesso.");
     setReload(!reload)
   }
 
