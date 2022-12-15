@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
 import api from "../api/api.js";
 
@@ -20,8 +21,10 @@ function ListaAnalises({ gomoExport, parentHandleClick, setCnpj }) {
     try {
       await api.delete("/analise/delete-trimestre", { params: analise });
       setReload(!reload);
+      toast.success("Análise apagada com sucesso!")
     } catch (error) {
       console.log(error);
+      toast.error("Erro: não foi possível apagar a análise. Tente novamente.")
     }
   }
 
