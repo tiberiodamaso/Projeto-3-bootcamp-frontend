@@ -46,6 +46,14 @@ const styles = StyleSheet.create({
         textAlign: 'justify',
         fontStyle: 'italic'
     },
+    nfes: {
+      marginLeft: 16,
+      marginRight: 16,
+      marginBottom: 2,
+      fontSize: 9,
+      textAlign: 'justify',
+      color: 'grey'
+  },
     signature: {
         margin: 16,
         fontSize: 10,
@@ -146,12 +154,14 @@ const styles = StyleSheet.create({
 
 
 
-function RelatorioPDF({ empresa, trimestre, dcpsTrimestre, gomoExport, gomoReceita, gomoInsumo, gomoCombustivel, gomoEnergia, gomoServico, observacao }) {  
+function RelatorioPDF({ empresa, trimestre, dcpsTrimestre, gomoExport, gomoReceita, gomoInsumo, gomoCombustivel, gomoEnergia, gomoServico, observacao, nfesDesconsideradas }) {  
         
+    
 
     const [dcp1, dcp2, dcp3] = dcpsTrimestre
     const ano = dcp1.ano
     const cnpj = dcp1.cnpj
+    const nfes = nfesDesconsideradas
     
 
     const createTableTrimestre = ()=>{
@@ -265,7 +275,12 @@ function RelatorioPDF({ empresa, trimestre, dcpsTrimestre, gomoExport, gomoRecei
         );
       };
 
+     
+               
+   
     
+
+
     
     return ( 
         <Document>
@@ -440,6 +455,25 @@ function RelatorioPDF({ empresa, trimestre, dcpsTrimestre, gomoExport, gomoRecei
 
 
 
+
+
+            <View style={styles.divider}></View>
+            
+
+            {/* ------- Notas Fiscais Desconsideradas -------- */}
+            <Text style={styles.subtitle}>
+            Notas Fiscais Desconsideradas            
+            </Text>
+            
+            <Text style={styles.nfes}>Operacao  -  País  -  CFOP  -  NCM  -  Valor R$  -  NI  - Nome</Text>
+            {nfes.map( (nf,index) => {
+                    return (
+                      
+                        <Text key={index} style={styles.nfes}>{nf.operacao} - {nf.pais} - {nf.cfop} - {nf.ncm} - {nf.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} - {nf.ni} - {nf.nome}</Text>
+
+                      )
+                  })
+            }
 
 
             <View style={styles.divider}></View>   

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import api from "../api/api.js";
 
-function ListaAnalises({ gomoExport, parentHandleClick }) {
+function ListaAnalises({ gomoExport, parentHandleClick, setCnpj }) {
   const [analises, setAnalises] = useState(null);
   const [reload, setReload] = useState(true);
 
@@ -12,7 +12,7 @@ function ListaAnalises({ gomoExport, parentHandleClick }) {
       setAnalises(response.data);
     }
     get();
-    // console.log(analises);
+
   }, [gomoExport, reload]);
 
   async function handleClickApagar(analise) {
@@ -42,32 +42,47 @@ function ListaAnalises({ gomoExport, parentHandleClick }) {
     <table className="table table-hover">
       <thead>
         <tr>
-          <th>CNPJ</th>
-          <th>Trimestre</th>
-          <th>Última atualização</th>
-          <th>Ação</th>
+          <th scope="col">CNPJ</th>
+          <th scope="col">Trimestre</th>
+          <th scope="col">Última atualização</th>
+          <th scope="col">Ação</th>
         </tr>
       </thead>
       <tbody>
         {analises &&
           analises.map((analise, index) => (
-            <tr key={index}>
+            <tr key={index} scope="row">
               <td
-                onClick={() =>
-                  parentHandleClick(analise.ano, analise.trimestre)
-                }
+                onClick={() => {
+                  setCnpj(analise.cnpj);
+                  parentHandleClick(
+                    analise.ano,
+                    analise.trimestre,
+                    analise.cnpj
+                  );
+                }}
               >
                 {formatarCnpj(analise.cnpj)}
               </td>
               <td
-                onClick={() =>
-                  parentHandleClick(analise.ano, analise.trimestre)
-                }
+                onClick={() => {
+                  setCnpj(analise.cnpj);
+                  parentHandleClick(
+                    analise.ano,
+                    analise.trimestre,
+                    analise.cnpj
+                  );
+                }}
               >{`${analise.trimestre} - ${analise.ano}`}</td>
               <td
-                onClick={() =>
-                  parentHandleClick(analise.ano, analise.trimestre)
-                }
+                onClick={() => {
+                  setCnpj(analise.cnpj);
+                  parentHandleClick(
+                    analise.ano,
+                    analise.trimestre,
+                    analise.cnpj
+                  );
+                }}
               >{`${new Date(analise.lastUpdate).getDate()}/${
                 new Date(analise.lastUpdate).getMonth() + 1
               }/${new Date(analise.lastUpdate).getFullYear()}`}</td>
