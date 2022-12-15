@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/authContext.js";
-import Teste from "../components/Teste.js";
 
 function Login() {
   const { setLoggedInUser } = useContext(AuthContext);
