@@ -54,7 +54,7 @@ function ListaAnalises({ gomoExport, parentHandleClick, setCnpj }) {
       <tbody>
         {analises &&
           analises.map((analise, index) => (
-            <tr key={index} scope="row">
+            <tr key={index} scope="row" style={{cursor: "pointer"}}>
               <td
                 onClick={() => {
                   setCnpj(analise.cnpj);
