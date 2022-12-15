@@ -12,6 +12,7 @@ function ListaAnalises({ gomoExport, parentHandleClick, setCnpj }) {
       setAnalises(response.data);
     }
     get();
+
   }, [gomoExport, reload]);
 
   async function handleClickApagar(analise) {

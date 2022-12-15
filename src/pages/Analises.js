@@ -17,8 +17,10 @@ import ListaAnalises from "../components/ListaAnalises";
 import { getObservacao, saveObservacao } from "../utils/observacao";
 
 function Analises() {
+
   const [info, setInfo] = useState({ cnpj: "", ano: 0, mes: 0, nLinha: 0 });
   const [showModal, setShowModal] = useState(true);
+
   const [dcps, setDCPs] = useState([]);
   const [cnpj, setCnpj] = useState("");
   const [empresa, setEmpresa] = useState("");
@@ -1351,23 +1353,25 @@ function Analises() {
               Salvar análise
             </button>
 
-        {!isLoading && (
-          <PDFDownloadLink document={<RelatorioPDF 
-                empresa={empresa} 
-                trimestre={meses} 
-                dcpsTrimestre={dcpsTrimestre} 
+            {!isLoading && (
+              <PDFDownloadLink document={<RelatorioPDF
+                empresa={empresa}
+                trimestre={meses}
+                dcpsTrimestre={dcpsTrimestre}
                 gomoExport={gomoExport}
                 gomoReceita={gomoReceita}
                 gomoInsumo={gomoInsumo}
                 gomoCombustivel={gomoCombustivel}
                 gomoEnergia={gomoEnergia}
                 gomoServico={gomoServico}
+
                 observacao={observacao.texto}
                 nfesDesconsideradas={nfesDesconsideradas} />} fileName="relatorio">
           {({loading}) => (loading ? <button className="btn btn-outline-primary">Carregando...</button>:<button className="btn btn-primary">Gerar relatório</button>)} 
         </PDFDownloadLink>
         )} 
         
+
 
 
           </div>
@@ -1385,11 +1389,10 @@ function Analises() {
       </div>
 
       {/* MODAL */}
-      <ModalNotas
-        showModal={showModal}
-        setShowModal={setShowModal}
-        info={info}
-      />
+
+      <ModalNotas showModal={showModal} setShowModal={setShowModal} info={info} />
+
+
     </div>
   );
 }

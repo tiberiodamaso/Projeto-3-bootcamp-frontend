@@ -1,6 +1,7 @@
 import { Modal } from 'bootstrap';
+import api from '../api/api';
 
-function LinhaDCP({ dcpsTrimestre, gomo, nLinha, setShowModal, showModal, setInfo, info }) {
+function LinhaDCP({ dcpsTrimestre, gomo, nLinha, setShowModal, showModal, setInfo }) {
 
   const descricoes = require('../utils/descricaolinhas.json');
   const clicavel = [4, 5, 9]; // Linhas da DCP que são clicáveis
@@ -9,11 +10,9 @@ function LinhaDCP({ dcpsTrimestre, gomo, nLinha, setShowModal, showModal, setInf
   // Recupera as notas fiscais referentes ao ano e mês do cnpj pesquisado
   function handleModal(e) {
     if (clicavel.includes(nLinha)) {
-      console.log(nLinha)
       const modalNotas = new Modal("#modalNotas")
       modalNotas.show()
   
-      console.log(nLinha)
       setInfo({
         cnpj: dcp1.cnpj,
         ano: dcp1.ano,
@@ -111,9 +110,16 @@ function LinhaDCP({ dcpsTrimestre, gomo, nLinha, setShowModal, showModal, setInf
   );
 }
 
-function LinhaNota({ nota }) {
+function LinhaNota({ nota, info }) {
+
+  // var notasDesconsideradas = []
+
+  function handleNota(e) {
+    e.target.parentElement.parentElement.classList.toggle("text-decoration-line-through")
+  }
+
   return (
-    <tr style={{ verticalAlign: "middle" }}>
+    <tr style={{ verticalAlign: "middle" }} data-id={nota._id}>
       <td>{nota.operacao}</td>
       <td>{nota.pais}</td>
       <td>{nota.cfop}</td>
@@ -128,7 +134,7 @@ function LinhaNota({ nota }) {
       <td className="col-2">{nota.ni}</td>
       <td>{nota.nome}</td>
       <td>
-        <i className="bi bi-file-earmark-x-fill text-danger"></i>
+        <i className="bi bi-file-earmark-x-fill text-danger" onClick={handleNota}></i>
       </td>
     </tr>
   );
