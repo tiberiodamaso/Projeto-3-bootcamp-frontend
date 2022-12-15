@@ -109,7 +109,7 @@ function exportacoes(notas, analises, ano, trim) {
   const cfopComercial = ["5501", "6501"];
   const todosCfop = ["7101", "7105", "7127", "5501", "6501"];
   const { lower, upper } = trimestre(trim);
-  console.log("analises");
+  // console.log("analises");
 
   desconsideradasNoMes(analises, cfopExportacao, 2020, 3, 4);
   const exportacoes = [];

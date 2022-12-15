@@ -12,7 +12,7 @@ function ListaAnalises({ gomoExport, parentHandleClick }) {
       setAnalises(response.data);
     }
     get();
-    console.log(analises);
+    // console.log(analises);
   }, [gomoExport, reload]);
 
   async function handleClickApagar(analise) {
@@ -39,7 +39,7 @@ function ListaAnalises({ gomoExport, parentHandleClick }) {
   }
 
   return (
-    <table>
+    <table className="table table-hover">
       <thead>
         <tr>
           <th>CNPJ</th>

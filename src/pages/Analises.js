@@ -15,7 +15,7 @@ import ModalNotas from "../components/ModalNotas";
 import ListaAnalises from "../components/ListaAnalises";
 
 function Analises() {
-  const [info, setInfo] = useState({cnpj: '', ano: 0, mes: 0,nLinha: 0})
+  const [info, setInfo] = useState({ cnpj: '', ano: 0, mes: 0, nLinha: 0 })
   const [showModal, setShowModal] = useState(true)
   const [dcps, setDCPs] = useState([]);
   const [cnpj, setCnpj] = useState("");
@@ -1244,11 +1244,11 @@ function Analises() {
           <div className="d-flex justify-content-end py-3">
             {/* <button className="btn btn-primary mx-3">Salvar análise</button> */}
 
-        {!isLoading && (
-          <PDFDownloadLink document={<RelatorioPDF 
-                empresa={empresa} 
-                trimestre={meses} 
-                dcpsTrimestre={dcpsTrimestre} 
+            {!isLoading && (
+              <PDFDownloadLink document={<RelatorioPDF
+                empresa={empresa}
+                trimestre={meses}
+                dcpsTrimestre={dcpsTrimestre}
                 gomoExport={gomoExport}
                 gomoReceita={gomoReceita}
                 gomoInsumo={gomoInsumo}
@@ -1256,10 +1256,10 @@ function Analises() {
                 gomoEnergia={gomoEnergia}
                 gomoServico={gomoServico}
                 observacao={observacao.texto} />} fileName="relatorio">
-          {({loading}) => (loading ? <button className="btn btn-outline-primary">Carregando...</button>:<button className="btn btn-primary">Gerar relatório</button>)} 
-        </PDFDownloadLink>
-        )} 
-        
+                {({ loading }) => (loading ? <button className="btn btn-outline-primary">Carregando...</button> : <button className="btn btn-primary">Gerar relatório</button>)}
+              </PDFDownloadLink>
+            )}
+
 
 
           </div>
@@ -1276,8 +1276,8 @@ function Analises() {
       </div>
 
       {/* MODAL */}
-      <ModalNotas showModal={showModal} setShowModal={setShowModal} info={info}/>
-      
+      <ModalNotas showModal={showModal} setShowModal={setShowModal} info={info} />
+
     </div>
   );
 }
