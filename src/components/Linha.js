@@ -4,7 +4,7 @@ import api from '../api/api';
 function LinhaDCP({ dcpsTrimestre, gomo, nLinha, setShowModal, showModal, info, setInfo }) {
 
   const descricoes = require('../utils/descricaolinhas.json');
-  const clicavel = [4, 5, 9]; // Linhas da DCP que são clicáveis
+  const clicavel = [4, 5, 9, 12, 15]; // Linhas da DCP que são clicáveis
   const [dcp1, dcp2, dcp3] = dcpsTrimestre;
 
   // Recupera as notas fiscais referentes ao ano e mês do cnpj pesquisado
